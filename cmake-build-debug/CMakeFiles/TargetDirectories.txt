@@ -1,0 +1,3 @@
+/home/bishan_/CLionProjects/gam150test/cmake-build-debug/CMakeFiles/gam150test.dir
+/home/bishan_/CLionProjects/gam150test/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/bishan_/CLionProjects/gam150test/cmake-build-debug/CMakeFiles/rebuild_cache.dir
