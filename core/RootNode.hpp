@@ -4,14 +4,15 @@
 
 #ifndef ROOT_HPP
 #define ROOT_HPP
-#include "node.h"
+#include "Node.hpp"
 
 
 class RootNode final : public Node {
-  RootNode();
+	friend class SceneTree;
+	RootNode();
 
 public:
-  [[nodiscard]] std::string type_id() const override;
+	[[nodiscard]] const char* type_id() const noexcept override;
 };
 
 

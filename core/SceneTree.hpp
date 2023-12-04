@@ -7,7 +7,7 @@
 
 #include <set>
 
-#include "node.h"
+#include "Node.hpp"
 
 
 class SceneTree final {

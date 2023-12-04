@@ -3,7 +3,7 @@
 //
 
 #include <stdexcept>
-#include "vec2.h"
+#include "vec2.hp"
 #include "cmath"
 #include <iostream>
 

@@ -1,7 +1,7 @@
-set(CMAKE_C_COMPILER "/bin/cc")
+set(CMAKE_C_COMPILER "C:/Users/schro/scoop/apps/jetbrains-toolbox/current/CLion Nova/bin/mingw/bin/gcc.exe")
 set(CMAKE_C_COMPILER_ARG1 "")
 set(CMAKE_C_COMPILER_ID "GNU")
-set(CMAKE_C_COMPILER_VERSION "13.2.1")
+set(CMAKE_C_COMPILER_VERSION "13.1.0")
 set(CMAKE_C_COMPILER_VERSION_INTERNAL "")
 set(CMAKE_C_COMPILER_WRAPPER "")
 set(CMAKE_C_STANDARD_COMPUTED_DEFAULT "17")
@@ -13,7 +13,7 @@ set(CMAKE_C11_COMPILE_FEATURES "c_std_11;c_static_assert")
 set(CMAKE_C17_COMPILE_FEATURES "c_std_17")
 set(CMAKE_C23_COMPILE_FEATURES "c_std_23")
 
-set(CMAKE_C_PLATFORM_ID "Linux")
+set(CMAKE_C_PLATFORM_ID "MinGW")
 set(CMAKE_C_SIMULATE_ID "")
 set(CMAKE_C_COMPILER_FRONTEND_VARIANT "GNU")
 set(CMAKE_C_SIMULATE_VERSION "")
@@ -21,11 +21,11 @@ set(CMAKE_C_SIMULATE_VERSION "")
 
 
 
-set(CMAKE_AR "/bin/ar")
-set(CMAKE_C_COMPILER_AR "/bin/gcc-ar")
-set(CMAKE_RANLIB "/bin/ranlib")
-set(CMAKE_C_COMPILER_RANLIB "/bin/gcc-ranlib")
-set(CMAKE_LINKER "/bin/ld")
+set(CMAKE_AR "C:/Users/schro/scoop/apps/jetbrains-toolbox/current/CLion Nova/bin/mingw/bin/ar.exe")
+set(CMAKE_C_COMPILER_AR "C:/Users/schro/scoop/apps/jetbrains-toolbox/current/CLion Nova/bin/mingw/bin/gcc-ar.exe")
+set(CMAKE_RANLIB "C:/Users/schro/scoop/apps/jetbrains-toolbox/current/CLion Nova/bin/mingw/bin/ranlib.exe")
+set(CMAKE_C_COMPILER_RANLIB "C:/Users/schro/scoop/apps/jetbrains-toolbox/current/CLion Nova/bin/mingw/bin/gcc-ranlib.exe")
+set(CMAKE_LINKER "C:/Users/schro/scoop/apps/jetbrains-toolbox/current/CLion Nova/bin/mingw/bin/ld.exe")
 set(CMAKE_MT "")
 set(CMAKE_TAPI "CMAKE_TAPI-NOTFOUND")
 set(CMAKE_COMPILER_IS_GNUCC 1)
@@ -43,7 +43,7 @@ set(CMAKE_C_LINKER_DEPFILE_SUPPORTED TRUE)
 
 # Save compiler ABI information.
 set(CMAKE_C_SIZEOF_DATA_PTR "8")
-set(CMAKE_C_COMPILER_ABI "ELF")
+set(CMAKE_C_COMPILER_ABI "")
 set(CMAKE_C_BYTE_ORDER "LITTLE_ENDIAN")
 set(CMAKE_C_LIBRARY_ARCHITECTURE "")
 
@@ -68,7 +68,7 @@ endif()
 
 
 
-set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include;/usr/local/include;/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed;/usr/include")
-set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "gcc;gcc_s;c;gcc;gcc_s")
-set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1;/usr/lib;/lib")
+set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "C:/Users/schro/scoop/apps/gcc/current/include;C:/Users/schro/scoop/apps/jetbrains-toolbox/1.28.1.15219/CLion Nova/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include;C:/Users/schro/scoop/apps/jetbrains-toolbox/1.28.1.15219/CLion Nova/bin/mingw/include;C:/Users/schro/scoop/apps/jetbrains-toolbox/1.28.1.15219/CLion Nova/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed;C:/Users/schro/scoop/apps/jetbrains-toolbox/1.28.1.15219/CLion Nova/bin/mingw/x86_64-w64-mingw32/include")
+set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "")
+set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "")
 set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")

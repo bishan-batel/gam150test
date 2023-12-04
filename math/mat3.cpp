@@ -2,7 +2,7 @@
 // Created by bishan_ on 11/29/23.
 //
 
-#include "mat3.h"
+#include "mat3.hpp"
 
 static const mat3 identity = mat3(1, 0, 0,
                                   0, 1, 0,

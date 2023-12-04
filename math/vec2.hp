@@ -6,7 +6,7 @@
 #define GAM150TEST_VEC2_H
 
 
-#include "number.h"
+#include "math/number.hpp"
 #include <iostream>
 
 /**

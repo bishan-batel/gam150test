@@ -1,3 +1,4 @@
-ToolSet: 1.0 (local)Options: 
+ToolSet: 11.0 w64 (local)@C:\Users\schro\scoop\apps\jetbrains-toolbox\current\CLion Nova\bin\mingw
+Options: 
 
-Options:-DCMAKE_MAKE_PROGRAM=/home/bishan_/.local/share/JetBrains/Toolbox/apps/clion-nova/bin/ninja/linux/x64/ninja
+Options:
