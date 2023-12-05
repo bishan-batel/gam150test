@@ -4,50 +4,103 @@
 
 #include "mat3.hpp"
 
-static const mat3 identity = mat3(1, 0, 0,
-                                  0, 1, 0,
-                                  0, 0, 1);
+const mat3 mat3::identity = mat3(1, 0, 0,
+                                 0, 1, 0,
+                                 0, 0, 1);
 
 constexpr f32 mat3::trace() const noexcept {
-    return m00 + m11 + m22;
+  return m00 + m11 + m22;
 }
 
-constexpr mat3::mat3(f32 m00, f32 m01, f32 m02, f32 m10, f32 m11, f32 m12, f32 m20, f32 m21, f32 m22) noexcept:
-        m00(m00), m01(m01), m02(m02),
-        m10(m10), m11(m11), m12(m12),
-        m20(m20), m21(m21), m22(m22) {}
+constexpr mat3::mat3(
+  const f32 m00,
+  const f32 m01,
+  const f32 m02,
+  const f32 m10,
+  const f32 m11,
+  const f32 m12,
+  const f32 m20,
+  const f32 m21,
+  const f32 m22
+  ) noexcept:
+  m00(m00), m01(m01), m02(m02),
+  m10(m10), m11(m11), m12(m12),
+  m20(m20), m21(m21), m22(m22) {}
 
 constexpr f32 mat3::det() const noexcept {
-    return m00 * m11 * m22 - m00 * m12 * m21 - m01 * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20;
+  return m00 * m11 * m22 - m00 * m12 * m21 - m01 * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20;
 }
 
 constexpr f32 mat3::invertible() const noexcept {
-    return det() != 0.f;
+  return det() != 0.f;
 }
 
-mat3 mat3::translation(vec2 offset) noexcept {
-    return mat3(1, 0, offset.x,
-                0, 1, offset.y,
-                0, 0, 1);
+constexpr mat3 mat3::translation(vec2 offset) noexcept {
+  return {
+    1, 0, offset.x,
+    0, 1, offset.y,
+    0, 0, 1
+  };
 }
 
-mat3 mat3::scale(vec2 scale) noexcept {
-    return mat3(scale.x, 0, 0,
-                0, scale.y, 0,
-                0, 0, 1);
+constexpr mat3 mat3::scale(vec2 scale) noexcept {
+  return {
+    scale.x, 0, 0,
+    0, scale.y, 0,
+    0, 0, 1
+  };
 }
 
-mat3 mat3::operator*(mat3 m2) const noexcept {
-    return mat3(
-            m00 * m2.m00 + m01 * m2.m10 + m02 * m2.m20,
-            m00 * m2.m01 + m01 * m2.m11 + m02 * m2.m21,
-            m00 * m2.m02 + m01 * m2.m12 + m02 * m2.m22,
-            m10 * m2.m00 + m11 * m2.m10 + m12 * m2.m20,
-            m10 * m2.m01 + m11 * m2.m11 + m12 * m2.m21,
-            m10 * m2.m02 + m11 * m2.m12 + m12 * m2.m22,
-            m20 * m2.m00 + m21 * m2.m10 + m22 * m2.m20,
-            m20 * m2.m01 + m21 * m2.m11 + m22 * m2.m21,
-            m20 * m2.m02 + m21 * m2.m12 + m22 * m2.m22
-    );
+constexpr mat3 mat3::operator+(const mat3 &other) const noexcept {
+  return {
+    m00 + other.m00, m01 + other.m01, m02 + other.m02,
+    m10 + other.m10, m11 + other.m11, m12 + other.m12,
+    m20 + other.m20, m21 + other.m21, m22 + other.m22
+  };
 }
 
+constexpr mat3 mat3::operator-(const mat3 &other) const noexcept {
+  return {
+    m00 - other.m00, m01 - other.m01, m02 - other.m02,
+    m10 - other.m10, m11 - other.m11, m12 - other.m12,
+    m20 - other.m20, m21 - other.m21, m22 - other.m22
+  };
+}
+
+constexpr mat3 mat3::operator-() const noexcept {
+  return {
+    -m00, -m01, -m02,
+    -m10, -m11, -m12,
+    -m20, -m21, -m22
+  };
+}
+
+constexpr mat3 mat3::operator*(const mat3 &other) const noexcept {
+  return {
+    m00 * other.m00 + m01 * other.m10 + m02 * other.m20,
+    m00 * other.m01 + m01 * other.m11 + m02 * other.m21,
+    m00 * other.m02 + m01 * other.m12 + m02 * other.m22,
+    m10 * other.m00 + m11 * other.m10 + m12 * other.m20,
+    m10 * other.m01 + m11 * other.m11 + m12 * other.m21,
+    m10 * other.m02 + m11 * other.m12 + m12 * other.m22,
+    m20 * other.m00 + m21 * other.m10 + m22 * other.m20,
+    m20 * other.m01 + m21 * other.m11 + m22 * other.m21,
+    m20 * other.m02 + m21 * other.m12 + m22 * other.m22
+  };
+}
+
+constexpr mat3 mat3::operator*(const f32 scalar) const noexcept {
+  return {
+    m00 * scalar, m01 * scalar, m02 * scalar,
+    m10 * scalar, m11 * scalar, m12 * scalar,
+    m20 * scalar, m21 * scalar, m22 * scalar
+  };
+}
+
+constexpr mat3 mat3::operator/(const f32 divisor) const noexcept {
+  return {
+    m00 / divisor, m01 / divisor, m02 / divisor,
+    m10 / divisor, m11 / divisor, m12 / divisor,
+    m20 / divisor, m21 / divisor, m22 / divisor
+  };
+}

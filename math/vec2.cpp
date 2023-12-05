@@ -2,26 +2,26 @@
 // Created by bishan_ on 11/28/23.
 //
 
-#include <stdexcept>
-#include "vec2.hp"
-#include "cmath"
+#include "vec2.hpp"
 #include <iostream>
+#include <stdexcept>
+#include "cmath"
 
-static const vec2
-  ONE{1, 1},
-  ZERO{-1, 0},
-  UP{0, -1},
-  DOWN{0, 1},
-  LEFT{-1, 0},
-  RIGHT{1, 0};
+const vec2
+  vec2::ONE{1, 1},
+  vec2::ZERO{-1, 0},
+  vec2::UP{0, -1},
+  vec2::DOWN{0, 1},
+  vec2::LEFT{-1, 0},
+  vec2::RIGHT{1, 0};
 
 constexpr vec2::vec2(const f32 x, const f32 y) noexcept:
   x(x), y(y) {}
 
-constexpr vec2::vec2(f32 v) noexcept:
+constexpr vec2::vec2(const f32 v) noexcept:
   vec2(v, v) {}
 
-constexpr vec2::vec2(f32 v[2]) noexcept:
+constexpr vec2::vec2(const f32 v[2]) noexcept:
   vec2(v[0], v[1]) {}
 
 constexpr vec2 vec2::operator+(const vec2 rhs) const noexcept {
@@ -30,6 +30,10 @@ constexpr vec2 vec2::operator+(const vec2 rhs) const noexcept {
 
 constexpr vec2 vec2::operator-(const vec2 rhs) const noexcept {
   return {x - rhs.x, y - rhs.y};
+}
+
+constexpr vec2 vec2::operator-() const noexcept {
+  return {-x, -y};
 }
 
 constexpr vec2 vec2::operator*(const f32 rhs) const noexcept {
@@ -52,7 +56,7 @@ f32 vec2::len() const noexcept {
   return sqrtf(x * x + y * y);
 }
 
-vec2 vec2::lerp(vec2 to, f32 t) const noexcept {
+vec2 vec2::lerp(const vec2 to, const f32 t) const noexcept {
   return *this + (to - *this) * t;
 }
 
@@ -81,28 +85,28 @@ constexpr vec2 vec2::orthogonal() const noexcept {
 }
 
 vec2 vec2::round() const noexcept {
-  return {roundf(x), roundf(y)};
+  return {std::round(x), std::round(y)};
 }
 
 vec2 vec2::floor() const noexcept {
-  return {floorf(x), floorf(y)};
+  return {std::floor(x), std::floor(y)};
 }
 
 vec2 vec2::ceil() const noexcept {
-  return {ceilf(x), ceilf(y)};
+  return {std::ceil(x), std::ceil(y)};
 }
 
-constexpr vec2 vec2::dot(vec2 other) const noexcept {
-  return {x * other.x, y * other.y};
+constexpr f32 vec2::dot(const vec2 other) const noexcept {
+  return x * other.x + y * other.y;
 }
 
-constexpr vec2 vec2::limit_length(f32 l) const noexcept {
+constexpr vec2 vec2::limit_length(const f32 l) const noexcept {
   const f32 m = len2();
 
   return m > l * l ? *this * sqrtf(l / m) : *this;
 }
 
-constexpr vec2 vec2::oplus(vec2 other) const noexcept {
+constexpr vec2 vec2::oplus(const vec2 other) const noexcept {
   return {x * other.x, y * other.y};
 }
 

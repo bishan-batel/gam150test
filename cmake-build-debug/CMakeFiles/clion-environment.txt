@@ -1,4 +1,0 @@
-ToolSet: 11.0 w64 (local)@C:\Users\schro\scoop\apps\jetbrains-toolbox\current\CLion Nova\bin\mingw
-Options: 
-
-Options:

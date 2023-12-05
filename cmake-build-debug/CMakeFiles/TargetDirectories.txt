@@ -1,3 +1,0 @@
-C:/Users/schro/Documents/GitHub/gam150test/cmake-build-debug/CMakeFiles/gam150test.dir
-C:/Users/schro/Documents/GitHub/gam150test/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/schro/Documents/GitHub/gam150test/cmake-build-debug/CMakeFiles/rebuild_cache.dir

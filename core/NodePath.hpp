@@ -10,21 +10,24 @@
 #include <ostream>
 
 
+class StringName;
+
 class NodePath final {
-	std::vector<std::string> segments;
-	u16 parent_indirection;
+  friend class Node;
+  std::vector<std::string> segments;
+  u16 parent_indirection;
 
 public:
-	// ReSharper disable once CppNonExplicitConvertingConstructor
-	/**
-	 * \brief 
-	 * \param path 
-	 */
-	NodePath(const std::string&path); // NOLINT(*-explicit-constructor)
+  // ReSharper disable once CppNonExplicitConvertingConstructor
+  /**
+   * \brief
+   * \param path
+   */
+  NodePath(const std::string &path); // NOLINT(*-explicit-constructor)
 
 
-	// ReSharper disable once CppNonExplicitConversionOperator
-	friend std::ostream& operator <<(std::ostream&os, const NodePath&path); // NOLINT(*-explicit-constructor)
+  // ReSharper disable once CppNonExplicitConversionOperator
+  friend std::ostream &operator <<(std::ostream &os, const NodePath &path); // NOLINT(*-explicit-constructor)
 };
 
 

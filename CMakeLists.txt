@@ -14,17 +14,15 @@ set(CMAKE_CONFIGURATION_TYPES
 add_executable(gam150test
         math/number.hpp
         math/vec2.cpp
-        math/vec2.hp
+        math/vec2.hpp
         math/mat3.cpp
         math/mat3.hpp
         core/Node.cpp
         core/Node.hpp
-        core/RootNode.cpp
-        core/RootNode.hpp
         core/SceneTree.cpp
         core/SceneTree.hpp
-        nodes/Node2D.cpp
-        nodes/Node2D.hpp
+        nodes/CanvasItem.cpp
+        nodes/CanvasItem.hpp
         core/Engine.cpp
         core/Engine.hpp
         core/NodePath.cpp
@@ -34,6 +32,9 @@ add_executable(gam150test
         math/mat4.cpp
         math/mat4.hpp
         main.cpp
+        core/Node.hpp
+        math/vec3.hpp
+        math/vec3.cpp
 )
 
 #if (DEBUG)

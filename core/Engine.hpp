@@ -4,9 +4,14 @@
 
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
+#include "SceneTree.hpp"
 
 
-class Engine {};
+class Engine final {
+public:
+  Engine() = delete;
+  static void run();
+};
 
 
 #endif //ENGINE_HPP

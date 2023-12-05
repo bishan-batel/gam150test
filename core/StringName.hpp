@@ -8,21 +8,25 @@
 
 
 class StringName {
-	const std::string name;
+  const std::string name;
 
 public:
-	// static constkkk
-	// ReSharper disable once CppNonExplicitConvertingConstructor
-	StringName(std::string _name); // NOLINT(*-explicit-constructor)
+  // static constkkk
+  // ReSharper disable once CppNonExplicitConvertingConstructor
+  StringName(std::string _name); // NOLINT(*-explicit-constructor)
 
-	// ReSharper disable once CppNonExplicitConversionOperator
-	operator std::string() const noexcept; // NOLINT(*-explicit-constructor)
+  StringName(const StringName &name);
+
+  [[nodiscard]] bool empty() const noexcept;
+
+  // ReSharper disable once CppNonExplicitConversionOperator
+  operator std::string() const noexcept; // NOLINT(*-explicit-constructor)
 };
 
 class bad_name final : std::exception {
-	[[nodiscard]] const char* what() const noexcept override {
-		return "Invalid String Name";
-	}
+  [[nodiscard]] const char *what() const noexcept override {
+    return "Invalid String Name";
+  }
 };
 
 
