@@ -104,3 +104,11 @@ constexpr mat3 mat3::operator/(const f32 divisor) const noexcept {
     m20 / divisor, m21 / divisor, m22 / divisor
   };
 }
+
+vec3 mat3::operator*(const vec3 other) const noexcept {
+  return {
+    other.x * m00 + other.y * m01 + other.z * m02,
+    other.x * m10 + other.y * m11 + other.z * m12,
+    other.x * m20 + other.y * m21 + other.z * m22
+  };
+}

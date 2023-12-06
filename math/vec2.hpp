@@ -2,15 +2,19 @@
 // Created by bishan_ on 11/28/23.
 //
 
+// ReSharper disable All
 #ifndef GAM150TEST_VEC2_H
 #define GAM150TEST_VEC2_H
 
 
+#include <Vector2.hpp>
+
 #include "math/number.hpp"
 #include <iostream>
 
-/**
- * A two dimensional vector with an x and y component
+#include "vec3.hpp"
+
+/** * A two dimensional vector with an x and y component
  */
 union vec2 final {
   /**
@@ -57,7 +61,7 @@ union vec2 final {
 
   f32 v[2];
 
-  constexpr vec2(f32 x, f32 y) noexcept;
+  vec2(f32 x, f32 y) noexcept;
 
   /**
    * Convert an array of at least 2 floats to m00 vector
@@ -67,9 +71,9 @@ union vec2 final {
   /**
    * Creates m00 vector with homogeneous elements
    */
-  constexpr explicit vec2(f32 v) noexcept;
+  explicit vec2(f32 v) noexcept;
 
-  constexpr ~vec2() = default;
+  ~vec2() = default;
 
   /**
    * Calculates the magnitude of the vector
@@ -119,9 +123,9 @@ union vec2 final {
    */
   [[nodiscard]] vec2 ceil() const noexcept;
 
-  [[nodiscard]] constexpr f32 dot(vec2 other) const noexcept;
+  [[nodiscard]] f32 dot(vec2 other) const noexcept;
 
-  [[nodiscard]] constexpr vec2 limit_length(f32 l) const noexcept;
+  [[nodiscard]] vec2 limit_length(f32 l) const noexcept;
 
   /**
    * Makes m00 new vector who's x & y values are the product of the two vectors x's & ys
@@ -138,17 +142,27 @@ union vec2 final {
 
   bool operator==(vec2 other) const noexcept;
 
-  constexpr vec2 operator+(vec2 rhs) const noexcept;
+  vec2 operator+(vec2 rhs) const noexcept;
 
-  constexpr vec2 operator-(vec2 rhs) const noexcept;
+  vec2 operator-(vec2 rhs) const noexcept;
 
-  constexpr vec2 operator-() const noexcept;
+  vec2 operator-() const noexcept;
 
-  constexpr vec2 operator*(f32 rhs) const noexcept;
+  vec2 operator*(f32 rhs) const noexcept;
 
-  constexpr vec2 operator/(f32 rhs) const noexcept;
+  vec2 operator/(f32 rhs) const noexcept;
+
+  vec2 &operator*=(f32 scalar);
+  vec2 &operator/=(f32 scalar);
+  vec2 &operator+=(vec2 other);
+  vec2 &operator-=(vec2 other);
+
+  [[nodiscard]] vec3 as_vec() const noexcept;
+  [[nodiscard]] vec3 as_point() const noexcept;
 
   constexpr f32 operator[](std::size_t n) const;
+
+  operator Vector2() const noexcept; // NOLINT(*-explicit-constructor)
 
   friend std::ostream &operator<<(std::ostream &os, const vec2 &v);
 };

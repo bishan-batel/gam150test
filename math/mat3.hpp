@@ -7,6 +7,7 @@
 
 
 #include "vec2.hpp"
+#include "vec3.hpp"
 
 union mat3 final {
   static constexpr std::size_t SIZE = 3;
@@ -44,6 +45,8 @@ union mat3 final {
   constexpr mat3 operator *(const mat3 &other) const noexcept;
   constexpr mat3 operator *(f32 scalar) const noexcept;
   constexpr mat3 operator /(f32 divisor) const noexcept;
+
+  vec3 operator *(vec3 other) const noexcept;
 };
 
 using affine2D = mat3;

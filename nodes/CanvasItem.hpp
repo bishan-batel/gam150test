@@ -20,10 +20,11 @@ class CanvasItem : public Node {
   };
 
 protected:
-  void register_to_tree() const override;
+  void register_to_tree() override;
+  void unregister_to_tree() override;
 
 public:
-  virtual void render() const = 0;
+  virtual void render() const;
 
   [[nodiscard]] const char *type_id() const noexcept override;
 };

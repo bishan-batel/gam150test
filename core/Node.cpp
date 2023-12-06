@@ -13,29 +13,37 @@ Node::Node() = default;
 
 void Node::initialise() {
   for (const auto &child : std::ranges::views::values(children)) {
-    child->inside_tree = child->parent->inside_tree;
-    child->tree = child->parent->tree;
+    asm("nop");
+    child->inside_tree = inside_tree;
+    child->tree = tree;
 
     if (!child->is_initialised) {
       child->initialise();
     }
+  }
 
-    if (child->parent->inside_tree) {
-      child->tree_entered();
-    }
+  if (is_inside_tree()) {
+    register_to_tree();
+    tree_entered();
   }
   ready();
+  is_initialised = true;
 }
 
-void Node::register_to_tree() const {}
+void Node::register_to_tree() {}
 
-void Node::unregister_to_tree() const {}
+void Node::unregister_to_tree() {}
 
 void Node::ready() {}
+
 void Node::process(f32 dt) {}
+
 void Node::physics_process(f32 dt) {}
+
 void Node::tree_entered() {}
+
 void Node::tree_exited() {}
+
 void Node::on_free() {}
 
 
@@ -43,22 +51,26 @@ void Node::add_child(Node *child) {
   if (child->parent || child->is_inside_tree())
     return;
 
-  std::string name = child->name.empty()
+  std::string child_name = child->name.empty()
     ? std::string(child->type_id())
     : std::string(child->name);
 
-  while (children.contains(name)) {
-    name.append("@");
+  while (children.contains(child_name)) {
+    const auto rand = static_cast<char>(std::hash<std::string>()(child_name) % ('z' - 'a') + 'a');
+    child_name.append(std::string(1, rand));
   }
 
+  child->name = child_name;
   child->parent = this;
-  children[name] = std::unique_ptr<Node>(child);
+  children[child_name] = std::unique_ptr<Node>(child);
 
   if (is_inside_tree()) {
     child->inside_tree = true;
+    child->tree = tree;
 
-    if (!child->is_initialised)
-      child->initialise();
+    if (!child->is_initialised) {
+      tree->queued_to_initialise.push(child);
+    }
   }
 }
 
@@ -75,6 +87,17 @@ Node *Node::get_child(const NodePath &path) {
   }
 
   return node;
+}
+
+std::optional<std::unique_ptr<Node>> Node::remove_child(const Node *child) {
+  if (!children.contains(child->name))
+    return std::nullopt;
+
+
+  auto ref = std::move(children.at(child->name));
+
+  children.erase(child->name);
+  return ref;
 }
 
 std::optional<Node *> Node::get_child_or_none(const NodePath &path) {
@@ -119,24 +142,34 @@ void Node::queue_free() {
 
   if (!parent)
     return;
-  std::unique_ptr<Node> unique = std::move(parent->children[name]);
-  parent->children.erase(name);
-  tree->queued_to_delete.push(std::move(unique));
+
+  const auto &a = parent->children;
+  const auto &n = name;
+
+
+  if (const auto unique = parent->children.extract(name); not unique.empty()) {
+    tree->queued_to_delete.push(std::move(unique.mapped()));
+  }
+
 }
 
 void Node::free() {
 
-  // parent = nullptr;
-  inside_tree = false;
-  on_free();
-
   for (const auto &child : std::views::values(children)) {
     child->free();
   }
+
+  inside_tree = false;
+  unregister_to_tree();
+  on_free();
 }
 
 StringName Node::get_name() const noexcept {
-  return StringName(name);
+  return {name};
+}
+
+SceneTree *Node::get_tree() const noexcept {
+  return tree;
 }
 
 void Node::set_name(const StringName &name) noexcept {

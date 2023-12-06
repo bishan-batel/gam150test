@@ -7,7 +7,10 @@
 
 
 #include <iostream>
+
 #include "math/number.hpp"
+
+union vec2;
 
 /**
  * A three dimensional vector with an x, y and z component
@@ -131,6 +134,11 @@ union vec3 final {
   [[nodiscard]] bool is_nan() const noexcept;
 
   [[nodiscard]] bool is_approx(vec3 other, f32 epsilon = EQUALITY_EPSILON) const noexcept;
+
+
+  [[nodiscard]] vec2 as2D() const noexcept;
+
+  [[nodiscard]] vec2 xy() const noexcept;
 
   bool operator==(vec3 other) const noexcept;
 

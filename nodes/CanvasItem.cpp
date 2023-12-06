@@ -4,12 +4,23 @@
 
 #include "CanvasItem.hpp"
 
+#include "core/SceneTree.hpp"
+
 
 bool CanvasItem::ZSort::operator()(const CanvasItem *const &lhs, const CanvasItem *const &rhs) const noexcept {
-  return lhs->global_z_index <= rhs->global_z_index;
+  return lhs->global_z_index >= rhs->global_z_index;
 }
 
-void CanvasItem::register_to_tree() const {
+void CanvasItem::register_to_tree() {
+  // get_tree()->to_render.insert(this);
+  get_tree()->to_render.push_back(this);
+}
+
+void CanvasItem::unregister_to_tree() {
+  const auto to_render = &get_tree()->to_render;
+
+  to_render->erase(std::ranges::find(*to_render, this));
+
 }
 
 void CanvasItem::render() const {}

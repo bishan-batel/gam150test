@@ -1,6 +1,7 @@
 #include "vec3.hpp"
 
 #include "cmath"
+#include "vec2.hpp"
 
 const vec3
   vec3::ONE{1.f},
@@ -87,6 +88,14 @@ bool vec3::is_nan() const noexcept {
 
 bool vec3::is_approx(const vec3 other, const f32 epsilon) const noexcept {
   return (*this - other).len2() < epsilon;
+}
+
+vec2 vec3::as2D() const noexcept {
+  return xy() / z;
+}
+
+vec2 vec3::xy() const noexcept {
+  return {x, y};
 }
 
 bool vec3::operator==(const vec3 other) const noexcept {

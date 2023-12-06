@@ -14,8 +14,8 @@
 #include "NodePath.hpp"
 #include "StringName.hpp"
 
-class StringName;
 
+// Forward declaration required for this instance
 class SceneTree;
 
 class Node {
@@ -34,8 +34,8 @@ class Node {
 
   void initialise();
 
-  virtual void register_to_tree() const;
-  virtual void unregister_to_tree() const;
+  virtual void register_to_tree();
+  virtual void unregister_to_tree();
 
 protected:
   virtual void ready();
@@ -68,6 +68,8 @@ public:
     return dynamic_cast<T>(get_child(path));
   }
 
+  std::optional<std::unique_ptr<Node>> remove_child(const Node *child);
+
   std::optional<Node *> get_child_or_none(const NodePath &path);
 
   [[nodiscard]] std::vector<Node *> get_children();
@@ -77,6 +79,8 @@ public:
   void queue_free();
 
   [[nodiscard]] StringName get_name() const noexcept;
+
+  [[nodiscard]] SceneTree* get_tree() const noexcept;
 
   void set_name(const StringName &name) noexcept;
 

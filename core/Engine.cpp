@@ -3,20 +3,17 @@
 //
 
 #include "Engine.hpp"
-
-#include <thread>
+#include <raylib-cpp.hpp>
 
 void Engine::run() {
   const auto tree = SceneTree::build_singleton();
 
-  std::thread thread([] {
-    std::cout << "bruh" << std::endl;
-  });
+
 
   while (!tree->should_exit) {
     tree->update();
   }
-  tree->full_shutdown();
 
-  thread.join();
+
+  tree->full_shutdown();
 }
