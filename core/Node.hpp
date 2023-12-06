@@ -11,8 +11,8 @@
 #include <string>
 #include <math/number.hpp>
 
-#include "NodePath.hpp"
-#include "StringName.hpp"
+#include "node_path.hpp"
+#include "string_name.hpp"
 
 
 // Forward declaration required for this instance
@@ -61,16 +61,16 @@ public:
     add_child(dynamic_cast<Node *>(child));
   }
 
-  Node *get_child(const NodePath &path);
+  Node *get_child(const node_path &path);
 
   template <typename T>
-  T *get_child(const NodePath &path) {
+  T *get_child(const node_path &path) {
     return dynamic_cast<T>(get_child(path));
   }
 
   std::optional<std::unique_ptr<Node>> remove_child(const Node *child);
 
-  std::optional<Node *> get_child_or_none(const NodePath &path);
+  std::optional<Node *> get_child_or_none(const node_path &path);
 
   [[nodiscard]] std::vector<Node *> get_children();
 
@@ -78,11 +78,11 @@ public:
 
   void queue_free();
 
-  [[nodiscard]] StringName get_name() const noexcept;
+  [[nodiscard]] string_name get_name() const noexcept;
 
   [[nodiscard]] SceneTree* get_tree() const noexcept;
 
-  void set_name(const StringName &name) noexcept;
+  void set_name(const string_name &name) noexcept;
 
   [[nodiscard]] bool is_inside_tree() const noexcept;
 

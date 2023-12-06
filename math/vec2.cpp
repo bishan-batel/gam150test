@@ -45,7 +45,7 @@ vec2 vec2::operator/(const f32 rhs) const noexcept {
 }
 
 constexpr f32 vec2::operator[](const std::size_t n) const {
-  return v[n];
+  return buff[n];
 }
 
 vec2 &vec2::operator*=(const f32 scalar) {

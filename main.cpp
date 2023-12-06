@@ -9,7 +9,7 @@
 #include <iostream>
 
 #include "core/Engine.hpp"
-#include "core/NodePath.hpp"
+#include "core/node_path.hpp"
 #include "core/SceneTree.hpp"
 
 int main() {

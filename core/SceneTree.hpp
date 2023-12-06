@@ -24,6 +24,7 @@ class SceneTree final {
 
   std::queue<std::unique_ptr<Node>> queued_to_delete;
   std::queue<Node *> queued_to_initialise;
+  std::optional<std::unique_ptr<Node>> queued_next_scene = std::nullopt;
 
   // std::set<const CanvasItem *, CanvasItem::ZSort> to_render{};
   std::vector<CanvasItem *> to_render{};
@@ -47,6 +48,14 @@ class SceneTree final {
 
 public:
   static std::unique_ptr<SceneTree> build_singleton();
+
+
+  void change_scene(std::unique_ptr<Node> node);
+
+  template <typename T>
+  void change_scene(std::unique_ptr<T> node) {
+    change_scene(std::unique_ptr<Node>(dynamic_cast<Node *>(node.release())));
+  }
 };
 
 

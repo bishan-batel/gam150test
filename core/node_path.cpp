@@ -2,13 +2,13 @@
 // Created by schro on 12/2/2023.
 //
 
-#include "NodePath.hpp"
+#include "node_path.hpp"
 
 #include <iostream>
 
-#include "StringName.hpp"
+#include "string_name.hpp"
 
-NodePath::NodePath(const std::string &path) :
+node_path::node_path(const std::string &path) :
   parent_indirection(0) {
   // if (path.find('/') == std::string::npos) {
   //   segments.emplace_back(path);
@@ -47,7 +47,7 @@ NodePath::NodePath(const std::string &path) :
   }
 }
 
-std::ostream &operator<<(std::ostream &os, const NodePath &path) {
+std::ostream &operator<<(std::ostream &os, const node_path &path) {
   if (path.parent_indirection > 0) {
     os << "..";
     for (u32 i = 1; i < path.parent_indirection; i++)

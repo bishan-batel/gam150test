@@ -49,10 +49,10 @@ add_executable(gam150test
         nodes/CanvasItem.hpp
         core/Engine.cpp
         core/Engine.hpp
-        core/NodePath.cpp
-        core/NodePath.hpp
-        core/StringName.cpp
-        core/StringName.hpp
+        core/node_path.cpp
+        core/node_path.hpp
+        core/string_name.cpp
+        core/string_name.hpp
         main.cpp
         core/Node.hpp
         math/vec3.hpp
@@ -61,8 +61,9 @@ add_executable(gam150test
         nodes/sprite_node.hpp
         local/iso_test.cpp
         local/iso_test.hpp
-        core/resource/Texture.cpp
-        core/resource/Texture.hpp
+        math/mat4.cpp
+        math/mat4.hpp
+        math/mat4.cpp
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

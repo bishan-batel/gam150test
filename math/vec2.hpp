@@ -55,11 +55,14 @@ union vec2 final {
   static const vec2 RIGHT;
 
   struct {
-    f32 x = 0;
-    f32 y = 0;
+    f32 x, y;
   };
 
-  f32 v[2];
+  struct {
+    f32 u, v;
+  };
+
+  f32 buff[2];
 
   vec2(f32 x, f32 y) noexcept;
 

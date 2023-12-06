@@ -11,16 +11,16 @@ const vec3
   vec3::LEFT{-1.f, 0.f, 0.f},
   vec3::RIGHT{1.f, 0.f, 0.f};
 
-constexpr vec3::vec3(const f32 x, const f32 y, const f32 z) noexcept :
+vec3::vec3(const f32 x, const f32 y, const f32 z) noexcept :
   x(x), y(y), z(z) {}
 
-constexpr vec3::vec3(const f32 v[3]) noexcept :
+vec3::vec3(const f32 v[3]) noexcept :
   x(v[0]), y(v[1]), z(v[2]) {}
 
-constexpr vec3::vec3(const f32 v) noexcept :
+vec3::vec3(const f32 v) noexcept :
   vec3(v, v, v) {}
 
-constexpr f32 vec3::len2() const noexcept {
+f32 vec3::len2() const noexcept {
   return x * x + y * y + z * z;
 }
 
@@ -50,7 +50,7 @@ vec3 vec3::clamp(const vec3 min, const vec3 max) const noexcept {
 }
 
 
-constexpr vec3 vec3::orthogonal() const noexcept {
+vec3 vec3::orthogonal() const noexcept {
   return {x, -z, y};
 }
 
@@ -67,17 +67,17 @@ vec3 vec3::ceil() const noexcept {
   return {std::ceil(x), std::ceil(y), std::ceil(z)};
 }
 
-constexpr f32 vec3::dot(const vec3 other) const noexcept {
+f32 vec3::dot(const vec3 other) const noexcept {
   return x * other.x + y * other.y + z * other.z;
 }
 
-constexpr vec3 vec3::limit_length(const f32 l) const noexcept {
+vec3 vec3::limit_length(const f32 l) const noexcept {
   const f32 len = len2();
 
   return len > l * l ? *this * l / std::sqrt(len) : *this;
 }
 
-constexpr vec3 vec3::oplus(const vec3 other) const noexcept {
+vec3 vec3::oplus(const vec3 other) const noexcept {
   return {x * other.x, y * other.y, z * other.z};
 }
 
@@ -102,27 +102,43 @@ bool vec3::operator==(const vec3 other) const noexcept {
   return is_approx(other, EQUALITY_EPSILON);
 }
 
-constexpr vec3 vec3::operator+(const vec3 rhs) const noexcept {
+vec3 vec3::operator+(const vec3 rhs) const noexcept {
   return {x + rhs.x, y + rhs.y, z + rhs.z};
 }
 
-constexpr vec3 vec3::operator-(vec3 rhs) const noexcept {
+vec3 vec3::operator+=(const vec3 rhs) noexcept {
+  return *this = *this + rhs;
+}
+
+vec3 vec3::operator-(const vec3 rhs) const noexcept {
   return {x - rhs.x, y - rhs.y, z - rhs.z};
 }
 
-constexpr vec3 vec3::operator-() const noexcept {
+vec3 vec3::operator-=(const vec3 rhs) noexcept {
+  return *this = *this - rhs;
+}
+
+vec3 vec3::operator-() const noexcept {
   return {-x, -y, -z};
 }
 
-constexpr vec3 vec3::operator*(const f32 rhs) const noexcept {
+vec3 vec3::operator*(const f32 rhs) const noexcept {
   return {x * rhs, y * rhs, z * rhs};
 }
 
-constexpr vec3 vec3::operator/(const f32 rhs) const noexcept {
+vec3 vec3::operator*=(const f32 rhs) noexcept {
+  return *this = *this * rhs;
+}
+
+vec3 vec3::operator/(const f32 rhs) const noexcept {
   return *this * (1.f / rhs);
 }
 
-constexpr f32 vec3::operator[](const std::size_t n) const {
+vec3 vec3::operator/=(const f32 rhs) noexcept {
+  return *this = *this / rhs;
+}
+
+f32 vec3::operator[](const std::size_t n) const {
   return v[n];
 }
 

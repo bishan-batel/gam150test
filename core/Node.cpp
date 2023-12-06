@@ -7,7 +7,7 @@
 #include <utility>
 
 #include "SceneTree.hpp"
-#include "StringName.hpp"
+#include "string_name.hpp"
 
 Node::Node() = default;
 
@@ -74,7 +74,7 @@ void Node::add_child(Node *child) {
   }
 }
 
-Node *Node::get_child(const NodePath &path) {
+Node *Node::get_child(const node_path &path) {
   // path.segments;
   auto node = this;
 
@@ -100,7 +100,7 @@ std::optional<std::unique_ptr<Node>> Node::remove_child(const Node *child) {
   return ref;
 }
 
-std::optional<Node *> Node::get_child_or_none(const NodePath &path) {
+std::optional<Node *> Node::get_child_or_none(const node_path &path) {
   auto node = this;
 
   for (u16 i = 0; i < path.parent_indirection; i++) {
@@ -164,7 +164,7 @@ void Node::free() {
   on_free();
 }
 
-StringName Node::get_name() const noexcept {
+string_name Node::get_name() const noexcept {
   return {name};
 }
 
@@ -172,8 +172,8 @@ SceneTree *Node::get_tree() const noexcept {
   return tree;
 }
 
-void Node::set_name(const StringName &name) noexcept {
-  this->name = StringName(name);
+void Node::set_name(const string_name &name) noexcept {
+  this->name = string_name(name);
 }
 
 bool Node::is_inside_tree() const noexcept {

@@ -6,6 +6,7 @@
 
 #include <Mouse.hpp>
 
+#include "core/SceneTree.hpp"
 #include "math/vec2.hpp"
 #include "nodes/sprite_node.hpp"
 
@@ -44,8 +45,10 @@ void IsoTestScene::process(const f32 dt) {
   }
   time += dt * 1.f;
 
-  if (std::fmod(time, 1.f) < dt) {
+  if (std::fmod(time, 3.f) < dt) {
     sprites.back().first->queue_free();
     sprites.pop_back();
+
+    get_tree()->change_scene(std::make_unique<IsoTestScene>());
   }
 }

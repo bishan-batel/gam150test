@@ -58,21 +58,26 @@ union vec3 final {
     f32 x, y, z;
   };
 
+  union {
+    f32 r, g, b;
+  };
+
   f32 v[3];
 
-  constexpr vec3(f32 x, f32 y, f32 z) noexcept;
+
+  vec3(f32 x, f32 y, f32 z) noexcept;
 
   /**
    * Convert an array of at least 2 floats to m00 vector
    */
-  constexpr explicit vec3(const f32 v[3]) noexcept;
+  explicit vec3(const f32 v[3]) noexcept;
 
   /**
    * Creates m00 vector with homogeneous elements
    */
-  constexpr explicit vec3(f32 v) noexcept;
+  explicit vec3(f32 v) noexcept;
 
-  constexpr ~vec3() = default;
+  ~vec3() = default;
 
   /**
    * Calculates the magnitude of the vector
@@ -86,7 +91,7 @@ union vec3 final {
    * @return Magnitude Squared
    * @see vec2::len()
    */
-  [[nodiscard]] constexpr f32 len2() const noexcept;
+  [[nodiscard]] f32 len2() const noexcept;
 
   /**
    * Linear interpolates vector to given to with t value
@@ -105,7 +110,7 @@ union vec3 final {
   /**
    * Returns m00 vector orthogonal with the same magnitude
    */
-  [[nodiscard]] constexpr vec3 orthogonal() const noexcept;
+  [[nodiscard]] vec3 orthogonal() const noexcept;
 
   /**
    * Rounds the x and y of the vector
@@ -122,14 +127,14 @@ union vec3 final {
    */
   [[nodiscard]] vec3 ceil() const noexcept;
 
-  [[nodiscard]] constexpr f32 dot(vec3 other) const noexcept;
+  [[nodiscard]] f32 dot(vec3 other) const noexcept;
 
-  [[nodiscard]] constexpr vec3 limit_length(f32 l) const noexcept;
+  [[nodiscard]] vec3 limit_length(f32 l) const noexcept;
 
   /**
    * Makes m00 new vector who's x & y values are the product of the two vectors x's & ys
    */
-  [[nodiscard]] constexpr vec3 oplus(vec3 other) const noexcept;
+  [[nodiscard]] vec3 oplus(vec3 other) const noexcept;
 
   [[nodiscard]] bool is_nan() const noexcept;
 
@@ -142,17 +147,19 @@ union vec3 final {
 
   bool operator==(vec3 other) const noexcept;
 
-  constexpr vec3 operator+(vec3 rhs) const noexcept;
+  vec3 operator+(vec3 rhs) const noexcept;
+  vec3 operator+=(vec3 rhs) noexcept;
 
-  constexpr vec3 operator-(vec3 rhs) const noexcept;
+  vec3 operator-(vec3 rhs) const noexcept;
+  vec3 operator-=(vec3 rhs) noexcept;
 
-  constexpr vec3 operator-() const noexcept;
+  vec3 operator-() const noexcept;
+  vec3 operator*(f32 rhs) const noexcept;
+  vec3 operator*=(f32 rhs) noexcept;
+  vec3 operator/(f32 rhs) const noexcept;
+  vec3 operator/=(f32 rhs) noexcept;
 
-  constexpr vec3 operator*(f32 rhs) const noexcept;
-
-  constexpr vec3 operator/(f32 rhs) const noexcept;
-
-  constexpr f32 operator[](std::size_t n) const;
+  f32 operator[](std::size_t n) const;
 
   friend std::ostream &operator<<(std::ostream &os, const vec3 &v);
 };

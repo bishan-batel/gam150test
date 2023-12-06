@@ -7,6 +7,7 @@
 #include <Texture.hpp>
 #include <chrono>
 #include <thread>
+#include <utility>
 
 #include "local/iso_test.hpp"
 #include "nodes/sprite_node.hpp"
@@ -15,6 +16,7 @@ std::unique_ptr<SceneTree> SceneTree::build_singleton() {
   auto tree = std::unique_ptr<SceneTree>(new SceneTree());
   return std::move(tree);
 }
+
 
 SceneTree::SceneTree() {
   window.Init(1000, 1000, "bruh");
@@ -81,8 +83,26 @@ void SceneTree::post_frame() {
     to_delete->free();
     queued_to_delete.pop();
   }
+
+  if (not queued_next_scene)
+    return;
+
+  root->free();
+  root = std::move(*queued_next_scene);
+  queued_next_scene = std::nullopt;
+
+  root->tree = this;
+  std::cout << root->tree << std::endl;
+  root->inside_tree = true;
+
+  root->initialise();
 }
 
 void SceneTree::full_shutdown() const {
   root->free();
+}
+
+
+void SceneTree::change_scene(std::unique_ptr<Node> node) {
+  queued_next_scene = std::move(node);
 }

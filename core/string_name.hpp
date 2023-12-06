@@ -7,20 +7,20 @@
 #include <string>
 
 
-class StringName {
+class string_name {
   const std::string name;
 
 public:
   // static constkkk
   // ReSharper disable once CppNonExplicitConvertingConstructor
-  StringName(std::string _name); // NOLINT(*-explicit-constructor)
+  string_name(std::string _name); // NOLINT(*-explicit-constructor)
 
-  StringName(const StringName &name);
+  string_name(const string_name &name);
 
   [[nodiscard]] bool empty() const noexcept;
 
   // ReSharper disable once CppNonExplicitConversionOperator
-  operator std::string() const noexcept; // NOLINT(*-explicit-constructor)
+  operator std::string() const noexcept { return name; } // NOLINT(*-explicit-constructor)
 };
 
 class bad_name final : std::exception {
