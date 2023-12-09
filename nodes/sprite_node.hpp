@@ -5,22 +5,29 @@
 #ifndef SPRITE_NODE_HPP
 #define SPRITE_NODE_HPP
 
-#include <Texture.hpp>
-
 #include "CanvasItem.hpp"
 
+#include "core/resource/texture.hpp"
+#include "math/vec2.hpp"
+#include "renderer/shader.hpp"
 
-class Sprite final : public CanvasItem {
 
-protected:
-  void render() const override;
+namespace bcake {
+  class Sprite : public CanvasItem {
 
-public:
-  raylib::Texture texture;
-  vec2 position;
 
-  explicit Sprite(const std::string &path);
-};
+  public:
+    const std::shared_ptr<const Texture> texture;
+    vec3 position;
+    std::unique_ptr<gl::Program> program;
+    gl::id buffer = 0, vao = 0;
 
+  protected:
+    void render() const override;
+
+  public:
+    explicit Sprite(const std::shared_ptr<const Texture> &texture);
+  };
+}
 
 #endif //SPRITE_NODE_HPP

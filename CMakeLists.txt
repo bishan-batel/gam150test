@@ -2,38 +2,22 @@ cmake_minimum_required(VERSION 3.26)
 project(gam150test)
 
 
-#include_directories(. inc)
 include_directories(. inc)
 
 set(CMAKE_CONFIGURATION_TYPES
         "Debug"
         "Release"
         CACHE STRING "" FORCE
-
 )
 
-find_package(raylib QUIET)
-if (NOT raylib_FOUND)
-    include(FetchContent)
-    FetchContent_Declare(
-            raylib
-            GIT_REPOSITORY https://github.com/raysan5/raylib.git
-            GIT_TAG 5.0
-    )
-    FetchContent_MakeAvailable(raylib)
-endif ()
+find_package(SDL2 REQUIRED)
+include_directories(gam150test ${SDL2_INCLUDE_DIRS})
 
-# raylib-cpp
-find_package(raylib_cpp QUIET)
-if (NOT raylib_cpp_FOUND)
-    include(FetchContent)
-    FetchContent_Declare(
-            raylib_cpp
-            GIT_REPOSITORY https://github.com/RobLoach/raylib-cpp.git
-            GIT_TAG v5.0.0
-    )
-    FetchContent_MakeAvailable(raylib_cpp)
-endif ()
+find_package(OpenGL REQUIRED COMPONENTS OpenGL)
+include_directories(gam150test ${OPENGL_INCLUDE_DIR})
+
+find_package(GLEW REQUIRED )
+#include_directories(gam150test ${GLEW_INCLUDE_DIRS})
 
 add_executable(gam150test
         math/number.hpp
@@ -64,6 +48,18 @@ add_executable(gam150test
         math/mat4.cpp
         math/mat4.hpp
         math/mat4.cpp
+        core/resource/texture.cpp
+        core/resource/texture.hpp
+        core/resource/IManagedResource.cpp
+        core/resource/IManagedResource.hpp
+        math/vec2i.cpp
+        math/vec2i.hpp
+        math/color.cpp
+        math/color.hpp
+        local/sdl_test.cpp
+        local/sdl_test.hpp
+        renderer/shader.cpp
+        renderer/shader.hpp
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
@@ -71,7 +67,8 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 23)
-target_link_libraries(${PROJECT_NAME} PUBLIC raylib raylib_cpp)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC ${SDL2_LIBRARIES} OpenGL::OpenGL ${GLEW_LIBRARIES})
 
 
 #file(COPY ${CMAKE_CURRENT_LIST_DIR}/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

@@ -160,8 +160,7 @@ union vec2 final {
   vec2 &operator+=(vec2 other);
   vec2 &operator-=(vec2 other);
 
-  [[nodiscard]] vec3 as_vec() const noexcept;
-  [[nodiscard]] vec3 as_point() const noexcept;
+  [[nodiscard]] vec3 to3D(f32 z) const noexcept;
 
   constexpr f32 operator[](std::size_t n) const;
 

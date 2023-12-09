@@ -8,57 +8,59 @@
 
 #include "string_name.hpp"
 
-node_path::node_path(const std::string &path) :
-  parent_indirection(0) {
-  // if (path.find('/') == std::string::npos) {
-  //   segments.emplace_back(path);
-  //   return;
-  // }
+namespace bcake {
+  node_path::node_path(const std::string &path) :
+    parent_indirection(0) {
+    // if (path.find('/') == std::string::npos) {
+    //   segments.emplace_back(path);
+    //   return;
+    // }
 
 
-  std::string str = path;
-  usize pos = str.find('/');
+    std::string str = path;
+    usize pos = str.find('/');
 
-  while (pos != std::string::npos) {
-    if (const std::string token = str.substr(0, pos); token == ".") {}
-    else if (token == "..") {
+    while (pos != std::string::npos) {
+      if (const std::string token = str.substr(0, pos); token == ".") {}
+      else if (token == "..") {
+        if (segments.empty())
+          parent_indirection++;
+        else
+          segments.pop_back();
+      }
+      else {
+        segments.emplace_back(token);
+      }
+      str.erase(0, pos + 1);
+
+      pos = str.find('/');
+    }
+
+    if (str == ".") {}
+    else if (str == "..") {
       if (segments.empty())
         parent_indirection++;
       else
         segments.pop_back();
     }
     else {
-      segments.emplace_back(token);
+      segments.emplace_back(str);
     }
-    str.erase(0, pos + 1);
-
-    pos = str.find('/');
   }
 
-  if (str == ".") {}
-  else if (str == "..") {
-    if (segments.empty())
-      parent_indirection++;
+  std::ostream &operator<<(std::ostream &os, const node_path &path) {
+    if (path.parent_indirection > 0) {
+      os << "..";
+      for (u32 i = 1; i < path.parent_indirection; i++)
+        os << "/..";
+    }
     else
-      segments.pop_back();
-  }
-  else {
-    segments.emplace_back(str);
-  }
-}
+      os << ".";
 
-std::ostream &operator<<(std::ostream &os, const node_path &path) {
-  if (path.parent_indirection > 0) {
-    os << "..";
-    for (u32 i = 1; i < path.parent_indirection; i++)
-      os << "/..";
-  }
-  else
-    os << ".";
+    for (const auto &segment : path.segments) {
+      os << "/" << segment;
+    }
 
-  for (const auto &segment : path.segments) {
-    os << "/" << segment;
+    return os;
   }
-
-  return os;
 }

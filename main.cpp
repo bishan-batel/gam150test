@@ -13,6 +13,6 @@
 #include "core/SceneTree.hpp"
 
 int main() {
-  Engine::run();
+  bcake::Engine::run();
   return 0;
 }

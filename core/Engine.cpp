@@ -3,17 +3,21 @@
 //
 
 #include "Engine.hpp"
-#include <raylib-cpp.hpp>
 
-void Engine::run() {
-  const auto tree = SceneTree::build_singleton();
+#include "SceneTree.hpp"
+
+namespace bcake {
+  void Engine::run() {
 
 
+    const auto tree = SceneTree::build_singleton();
 
-  while (!tree->should_exit) {
-    tree->update();
+
+    while (!tree->should_exit) {
+      tree->update();
+    }
+
+
+    tree->full_shutdown();
   }
-
-
-  tree->full_shutdown();
 }

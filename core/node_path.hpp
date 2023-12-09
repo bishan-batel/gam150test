@@ -12,22 +12,23 @@
 
 class string_name;
 
-class node_path final {
-  friend class Node;
-  std::vector<std::string> segments;
-  u16 parent_indirection;
+namespace bcake {
+  class node_path final {
+    friend class Node;
+    std::vector<std::string> segments;
+    u16 parent_indirection;
 
-public:
-  // ReSharper disable once CppNonExplicitConvertingConstructor
-  /**
-   * \brief
-   * \param path
-   */
-  node_path(const std::string &path); // NOLINT(*-explicit-constructor)
+  public:
+    // ReSharper disable once CppNonExplicitConvertingConstructor
+    /**
+     * \brief
+     * \param path
+     */
+    node_path(const std::string &path); // NOLINT(*-explicit-constructor)
 
 
-  friend std::ostream &operator <<(std::ostream &os, const node_path &path);
-};
-
+    friend std::ostream &operator <<(std::ostream &os, const node_path &path);
+  };
+}
 
 #endif //NODE_PATH_HPP

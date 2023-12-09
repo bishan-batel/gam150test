@@ -141,7 +141,7 @@ union vec3 final {
   [[nodiscard]] bool is_approx(vec3 other, f32 epsilon = EQUALITY_EPSILON) const noexcept;
 
 
-  [[nodiscard]] vec2 as2D() const noexcept;
+  [[nodiscard]] vec2 xy_homogeneous() const noexcept;
 
   [[nodiscard]] vec2 xy() const noexcept;
 
@@ -163,6 +163,5 @@ union vec3 final {
 
   friend std::ostream &operator<<(std::ostream &os, const vec3 &v);
 };
-
 
 #endif //GAM150TEST_VEC3_H

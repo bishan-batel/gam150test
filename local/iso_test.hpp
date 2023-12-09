@@ -1,15 +1,32 @@
 #pragma once
 
 #include "core/Node.hpp"
+#include "core/resource/texture.hpp"
 #include "math/vec2.hpp"
 #include "nodes/sprite_node.hpp"
 
 
-class IsoTestScene final : public Node {
-  std::vector<std::pair<Sprite *, vec2>> sprites;
-  f32 time = 0;
+namespace bcake {
+  class IsoTestScene final : public Node {
+    f32 time = 0;
+    std::shared_ptr<bcake::Texture> texture;
 
-  void ready() override;
+  protected:
+    void ready() override;
+  };
 
-  void process(f32 dt) override;
-};
+  class TestSprite final : public Sprite {
+    f32 time;
+    vec2 vel = vec2::ZERO, real_position;
+    const vec2 og_position;
+
+  public:
+    explicit TestSprite(const std::shared_ptr<const bcake::Texture> &texture, vec2 pos);
+
+    [[nodiscard]] const char *type_id() const noexcept override;
+
+  protected:
+    void ready() override;;
+    void process(f32 dt) override;
+  };
+}

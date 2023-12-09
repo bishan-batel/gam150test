@@ -4,51 +4,72 @@
 
 #include "iso_test.hpp"
 
-#include <Mouse.hpp>
-
+#include <stb_image.h>
+#include <core/resource/texture.hpp>
 #include "core/SceneTree.hpp"
 #include "math/vec2.hpp"
 #include "nodes/sprite_node.hpp"
 
-void IsoTestScene::ready() {
-  std::cout << "init" << std::endl;
+constexpr auto TILE_WIDTH = 16.f;
+constexpr auto SPRITE_SCALE = 4.f;
 
-  constexpr auto size = 8;
-  for (auto y = 0; y < size; y++) {
-    for (auto x = 0; x < size; x++) {
-      auto coord = vec2(static_cast<f32>(x) - size / 2.f, static_cast<f32>(y) - size / 2.f);
-      coord = coord * 4.f * 32.f;
+namespace bcake {
+  void IsoTestScene::ready() {
 
-      coord = vec2(coord.dot(vec2(0.5f, -0.5f)), coord.dot(vec2(0.25f, 0.25f)));
+    stbi_set_flip_vertically_on_load(1);
+    texture = std::make_shared<bcake::Texture>("assets/wate.png");
 
-      const auto sprite = new Sprite("assets/iso.png");
-      coord += vec2(500 - 2.f * 32.f, 500.f);
-      sprite->position = coord;
-      add_child(sprite);
-      sprites.emplace_back(sprite, sprite->position);
+    constexpr auto size = 44;
+    for (auto y = 0; y < size; y++) {
+      for (auto x = 0; x < size; x++) {
+        auto coord = vec2(static_cast<f32>(x) - size / 2.f, static_cast<f32>(y) - size / 2.f);
+        coord = coord * SPRITE_SCALE * TILE_WIDTH;
+
+        coord = vec2(coord.dot(vec2(0.5f, -0.5f)), coord.dot(vec2(0.25f, 0.25f)));
+
+        coord += vec2(500 - TILE_WIDTH * SPRITE_SCALE / 2, 500.f);
+        add_child(new TestSprite(texture, coord));
+      }
     }
   }
-}
 
-void IsoTestScene::process(const f32 dt) {
 
-  for (const auto &[sprite, pos] : sprites) {
-    sprite->position = pos;
+  TestSprite::TestSprite(const std::shared_ptr<const bcake::Texture> &texture, const vec2 pos) :
+    Sprite(texture),
+    time(0.f), real_position(pos), og_position(pos) {}
 
-    constexpr auto scale = 0.01f;
-    sprite->position.y += (std::cos(scale * pos.x + time) + std::sin(scale * pos.y + time)) * 32.f;
-
-    // const auto mouse = vec2(static_cast<f32>(raylib::Mouse::GetX()), static_cast<f32>(raylib::Mouse::GetY()));
-    // const auto dist = (-vec2(16.f, 16.f) * 4.f + mouse - pos).len2() * 1E-5f;
-    // sprite->position.y += 4.f * 32.f / (dist + 1.f);
-    sprite->position = (sprite->position / 2.f).round() * 2.f;
+  const char *TestSprite::type_id() const noexcept {
+    return "TestSprite";
   }
-  time += dt * 1.f;
 
-  if (std::fmod(time, 3.f) < dt) {
-    sprites.back().first->queue_free();
-    sprites.pop_back();
+  void TestSprite::ready() {}
 
-    get_tree()->change_scene(std::make_unique<IsoTestScene>());
+  void TestSprite::process(const f32 dt) {
+
+    vec2 target = og_position;
+
+    constexpr auto scale = 0.014f;
+    target.y += (std::cos(scale * og_position.x + time) + std::sin(scale * og_position.y + time)) * 16.f;
+
+
+    // if (raylib::Mouse::IsButtonDown(0)) {
+    //   const auto mouse = vec2(static_cast<f32>(raylib::Mouse::GetX()), static_cast<f32>(raylib::Mouse::GetY()));
+    //   const auto dist = (-vec2(TILE_WIDTH) / 2 * SPRITE_SCALE + mouse - og_position).len();
+    //   target.y -= SPRITE_SCALE * 8.f / (dist * 1E-3f + 1.f);
+    //   // target.y -= std::sin(dist * 1E-2f + time * 3.f) * 4.f * 16.f * std::exp(-dist * dist * 1E-5f);
+    //   target -= (mouse - og_position).normalised() * std::exp(-dist * dist * 1E-5f) * TILE_WIDTH / 2 * SPRITE_SCALE;
+    // }
+
+    // position = position.lerp(target, dt * 1.f);
+
+    constexpr auto coeff = 100.f;
+    constexpr auto friction = 0.93f;
+
+    vel += (target - real_position) * dt * coeff;
+    vel *= friction;
+    real_position += vel * dt;
+    constexpr auto a = SPRITE_SCALE / 2;
+    position = ((real_position / a).floor() * a).to3D(1); // position = target;
+    time += dt * 3.f;
   }
 }

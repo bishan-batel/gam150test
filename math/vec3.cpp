@@ -90,7 +90,7 @@ bool vec3::is_approx(const vec3 other, const f32 epsilon) const noexcept {
   return (*this - other).len2() < epsilon;
 }
 
-vec2 vec3::as2D() const noexcept {
+vec2 vec3::xy_homogeneous() const noexcept {
   return xy() / z;
 }
 

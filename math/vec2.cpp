@@ -68,16 +68,13 @@ vec2 &vec2::operator-=(const vec2 other) {
   return *this;
 }
 
-vec3 vec2::as_vec() const noexcept {
-  return {x, y, 0};
+vec3 vec2::to3D(f32 z) const noexcept {
+  return {x, y, z};
 }
 
-vec3 vec2::as_point() const noexcept {
-  return {x, y, 1};
-}
 
 vec2::operator Vector2() const noexcept {
-  return Vector2(x, y);
+  return {x, y};
 }
 
 constexpr f32 vec2::len2() const noexcept {
@@ -109,7 +106,7 @@ bool vec2::is_approx(const vec2 other, const f32 epsilon) const noexcept {
 }
 
 bool vec2::operator==(const vec2 other) const noexcept {
-  return (*this - other).len2() < vec2::EQUALITY_EPSILON;
+  return (*this - other).len2() < EQUALITY_EPSILON;
 }
 
 constexpr vec2 vec2::orthogonal() const noexcept {

@@ -15,78 +15,81 @@
 #include "string_name.hpp"
 
 
-// Forward declaration required for this instance
-class SceneTree;
+namespace bcake {
+  // Forward declaration required for this instance
+  class SceneTree;
 
-class Node {
-  friend class SceneTree;
+  class Node {
+    friend class SceneTree;
 
-  bool queued_for_deletion = false,
-       inside_tree = false,
-       is_initialised = false;
+    bool queued_for_deletion = false,
+         inside_tree = false,
+         is_initialised = false;
 
 
-  std::map<std::string, std::unique_ptr<Node>> children;
-  Node *parent = nullptr;
-  SceneTree *tree = nullptr;
+    std::map<std::string, std::unique_ptr<Node>> children;
+    Node *parent = nullptr;
+    SceneTree *tree = nullptr;
 
-  std::string name;
+    std::string name;
 
-  void initialise();
+    void initialise();
 
-  virtual void register_to_tree();
-  virtual void unregister_to_tree();
+    virtual void register_to_tree();
+    virtual void unregister_to_tree();
 
-protected:
-  virtual void ready();
+    void process_recurse(f32 dt);
 
-  virtual void process(f32 dt);
+  protected:
+    virtual void ready();
 
-  virtual void physics_process(f32 dt);
+    virtual void process(f32 dt);
 
-  virtual void tree_entered();
+    virtual void physics_process(f32 dt);
 
-  virtual void tree_exited();
+    virtual void tree_entered();
 
-  virtual void on_free();
+    virtual void tree_exited();
 
-public:
-  Node();
-  virtual ~Node() = default;
+    virtual void on_free();
 
-  void add_child(Node *child);
+  public:
+    Node();
+    virtual ~Node() = default;
 
-  template <typename T>
-  void add_child(T *child) {
-    add_child(dynamic_cast<Node *>(child));
-  }
+    void add_child(Node *child);
 
-  Node *get_child(const node_path &path);
+    template <typename T>
+    void add_child(T *child) {
+      add_child(dynamic_cast<Node *>(child));
+    }
 
-  template <typename T>
-  T *get_child(const node_path &path) {
-    return dynamic_cast<T>(get_child(path));
-  }
+    Node *get_child(const node_path &path);
 
-  std::optional<std::unique_ptr<Node>> remove_child(const Node *child);
+    template <typename T>
+    T *get_child(const node_path &path) {
+      return dynamic_cast<T*>(get_child(path));
+    }
 
-  std::optional<Node *> get_child_or_none(const node_path &path);
+    std::optional<std::unique_ptr<Node>> remove_child(const Node *child);
 
-  [[nodiscard]] std::vector<Node *> get_children();
+    std::optional<Node *> get_child_or_none(const node_path &path);
 
-  void free();
+    [[nodiscard]] std::vector<Node *> get_children();
 
-  void queue_free();
+    void free();
 
-  [[nodiscard]] string_name get_name() const noexcept;
+    void queue_free();
 
-  [[nodiscard]] SceneTree* get_tree() const noexcept;
+    [[nodiscard]] string_name get_name() const noexcept;
 
-  void set_name(const string_name &name) noexcept;
+    [[nodiscard]] SceneTree *get_tree() const noexcept;
 
-  [[nodiscard]] bool is_inside_tree() const noexcept;
+    void set_name(const string_name &name) noexcept;
 
-  [[nodiscard]] virtual const char *type_id() const noexcept;
-};
+    [[nodiscard]] bool is_inside_tree() const noexcept;
 
+    [[nodiscard]] virtual const char *type_id() const noexcept;
+  };
+}
 #endif //NODE_H

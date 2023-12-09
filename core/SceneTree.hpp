@@ -5,58 +5,67 @@
 #ifndef SCENE_TREE_HPP
 #define SCENE_TREE_HPP
 
-#include <Window.hpp>
 #include <chrono>
 #include <functional>
 #include <queue>
 #include <set>
 
+#include <SDL2/SDL.h>
 #include "Node.hpp"
+#include "math/color.hpp"
+#include "math/vec2i.hpp"
 #include "nodes/CanvasItem.hpp"
 
+namespace bcake {
+  class SceneTree final {
+    friend class Engine;
+    friend class Node;
+    friend class CanvasItem;
 
-class SceneTree final {
-  friend class Engine;
-  friend class Node;
-  friend class CanvasItem;
+    std::unique_ptr<Node> root;
 
-  std::unique_ptr<Node> root;
+    std::queue<std::unique_ptr<Node>> queued_to_delete;
+    std::queue<Node *> queued_to_initialise;
+    std::optional<std::unique_ptr<Node>> queued_next_scene = std::nullopt;
 
-  std::queue<std::unique_ptr<Node>> queued_to_delete;
-  std::queue<Node *> queued_to_initialise;
-  std::optional<std::unique_ptr<Node>> queued_next_scene = std::nullopt;
+    // std::set<const CanvasItem *, CanvasItem::ZSort> to_render{};
+    std::vector<CanvasItem *> to_render{};
 
-  // std::set<const CanvasItem *, CanvasItem::ZSort> to_render{};
-  std::vector<CanvasItem *> to_render{};
+    SDL_Window *window = nullptr;
+    SDL_GLContext gl_context{};
 
-  const f32 target_frame_rate = 60.f;
-  std::chrono::duration<f64> last_process_frame{};
+    vec2i window_size;
+    color clear_color = color::rgba(0.3f, 0.2f, 0.2f, 1.f);
 
-  raylib::Window window;
+    const f32 target_frame_rate = 60.f;
+    std::chrono::duration<f64> last_process_frame{};
 
-  bool should_exit = false;
-
-
-  SceneTree();
-
-  void update();
-  void render();
-
-  void post_frame();
-
-  void full_shutdown() const;
-
-public:
-  static std::unique_ptr<SceneTree> build_singleton();
+    bool should_exit = false;
 
 
-  void change_scene(std::unique_ptr<Node> node);
+    SceneTree();
 
-  template <typename T>
-  void change_scene(std::unique_ptr<T> node) {
-    change_scene(std::unique_ptr<Node>(dynamic_cast<Node *>(node.release())));
-  }
-};
+    void update();
+    void render() const;
 
+    void process_input();
+    void post_frame();
+
+
+    void full_shutdown() const;
+
+  public:
+    static std::unique_ptr<SceneTree> build_singleton();
+
+
+    void change_scene(std::unique_ptr<Node> node);
+
+    template <typename T>
+    void change_scene(std::unique_ptr<T> node) {
+      change_scene(std::unique_ptr<Node>(dynamic_cast<Node *>(node.release())));
+    }
+  };
+
+}
 
 #endif //SCENE_TREE_HPP

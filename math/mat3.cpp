@@ -4,15 +4,18 @@
 
 #include "mat3.hpp"
 
+#include "vec2.hpp"
+
 const mat3 mat3::identity = mat3(1, 0, 0,
                                  0, 1, 0,
-                                 0, 0, 1);
+                                 0, 0, 1
+  );
 
-constexpr f32 mat3::trace() const noexcept {
+f32 mat3::trace() const noexcept {
   return m00 + m11 + m22;
 }
 
-constexpr mat3::mat3(
+mat3::mat3(
   const f32 m00,
   const f32 m01,
   const f32 m02,
@@ -27,15 +30,15 @@ constexpr mat3::mat3(
   m10(m10), m11(m11), m12(m12),
   m20(m20), m21(m21), m22(m22) {}
 
-constexpr f32 mat3::det() const noexcept {
+f32 mat3::det() const noexcept {
   return m00 * m11 * m22 - m00 * m12 * m21 - m01 * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20;
 }
 
-constexpr f32 mat3::invertible() const noexcept {
+bool mat3::invertible() const noexcept {
   return det() != 0.f;
 }
 
-constexpr mat3 mat3::translation(vec2 offset) noexcept {
+mat3 mat3::translation(vec2 offset) noexcept {
   return {
     1, 0, offset.x,
     0, 1, offset.y,
@@ -43,7 +46,7 @@ constexpr mat3 mat3::translation(vec2 offset) noexcept {
   };
 }
 
-constexpr mat3 mat3::scale(vec2 scale) noexcept {
+mat3 mat3::scale(vec2 scale) noexcept {
   return {
     scale.x, 0, 0,
     0, scale.y, 0,
@@ -51,7 +54,7 @@ constexpr mat3 mat3::scale(vec2 scale) noexcept {
   };
 }
 
-constexpr mat3 mat3::operator+(const mat3 &other) const noexcept {
+mat3 mat3::operator+(const mat3 &other) const noexcept {
   return {
     m00 + other.m00, m01 + other.m01, m02 + other.m02,
     m10 + other.m10, m11 + other.m11, m12 + other.m12,
@@ -59,7 +62,7 @@ constexpr mat3 mat3::operator+(const mat3 &other) const noexcept {
   };
 }
 
-constexpr mat3 mat3::operator-(const mat3 &other) const noexcept {
+mat3 mat3::operator-(const mat3 &other) const noexcept {
   return {
     m00 - other.m00, m01 - other.m01, m02 - other.m02,
     m10 - other.m10, m11 - other.m11, m12 - other.m12,
@@ -67,7 +70,7 @@ constexpr mat3 mat3::operator-(const mat3 &other) const noexcept {
   };
 }
 
-constexpr mat3 mat3::operator-() const noexcept {
+mat3 mat3::operator-() const noexcept {
   return {
     -m00, -m01, -m02,
     -m10, -m11, -m12,
@@ -75,7 +78,7 @@ constexpr mat3 mat3::operator-() const noexcept {
   };
 }
 
-constexpr mat3 mat3::operator*(const mat3 &other) const noexcept {
+mat3 mat3::operator*(const mat3 &other) const noexcept {
   return {
     m00 * other.m00 + m01 * other.m10 + m02 * other.m20,
     m00 * other.m01 + m01 * other.m11 + m02 * other.m21,
@@ -89,7 +92,7 @@ constexpr mat3 mat3::operator*(const mat3 &other) const noexcept {
   };
 }
 
-constexpr mat3 mat3::operator*(const f32 scalar) const noexcept {
+mat3 mat3::operator*(const f32 scalar) const noexcept {
   return {
     m00 * scalar, m01 * scalar, m02 * scalar,
     m10 * scalar, m11 * scalar, m12 * scalar,
@@ -97,7 +100,7 @@ constexpr mat3 mat3::operator*(const f32 scalar) const noexcept {
   };
 }
 
-constexpr mat3 mat3::operator/(const f32 divisor) const noexcept {
+mat3 mat3::operator/(const f32 divisor) const noexcept {
   return {
     m00 / divisor, m01 / divisor, m02 / divisor,
     m10 / divisor, m11 / divisor, m12 / divisor,
@@ -111,4 +114,8 @@ vec3 mat3::operator*(const vec3 other) const noexcept {
     other.x * m10 + other.y * m11 + other.z * m12,
     other.x * m20 + other.y * m21 + other.z * m22
   };
+}
+
+mat3 operator*(const f32 scalar, const mat3 &other) noexcept {
+  return other * scalar;
 }
