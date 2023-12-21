@@ -8,13 +8,13 @@
 #include <chrono>
 #include <functional>
 #include <queue>
-#include <set>
 
 #include <SDL2/SDL.h>
 #include "Node.hpp"
 #include "math/color.hpp"
 #include "math/vec2i.hpp"
 #include "nodes/CanvasItem.hpp"
+#include "renderer/shader.hpp"
 
 namespace bcake {
   class SceneTree final {
@@ -63,6 +63,10 @@ namespace bcake {
     template <typename T>
     void change_scene(std::unique_ptr<T> node) {
       change_scene(std::unique_ptr<Node>(dynamic_cast<Node *>(node.release())));
+    }
+
+    [[nodiscard]] vec2i get_window_size() const {
+      return window_size;
     }
   };
 

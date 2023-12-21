@@ -141,19 +141,18 @@ namespace bcake {
     if (queued_for_deletion)
       return;
 
-    if (!is_inside_tree()) {
+    if (not is_inside_tree()) {
       free();
       return;
     }
 
     queued_for_deletion = true;
 
-    if (!parent)
+    if (not parent)
       return;
 
-    const auto &a = parent->children;
-    const auto &n = name;
-
+    // const auto &a = parent->children;
+    // const auto &n = name;
 
     if (const auto unique = parent->children.extract(name); not unique.empty()) {
       tree->queued_to_delete.push(std::move(unique.mapped()));

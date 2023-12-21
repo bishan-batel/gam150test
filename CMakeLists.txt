@@ -16,7 +16,7 @@ include_directories(gam150test ${SDL2_INCLUDE_DIRS})
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 include_directories(gam150test ${OPENGL_INCLUDE_DIR})
 
-find_package(GLEW REQUIRED )
+find_package(GLEW REQUIRED)
 #include_directories(gam150test ${GLEW_INCLUDE_DIRS})
 
 add_executable(gam150test
@@ -45,9 +45,6 @@ add_executable(gam150test
         nodes/sprite_node.hpp
         local/iso_test.cpp
         local/iso_test.hpp
-        math/mat4.cpp
-        math/mat4.hpp
-        math/mat4.cpp
         core/resource/texture.cpp
         core/resource/texture.hpp
         core/resource/IManagedResource.cpp
@@ -60,11 +57,26 @@ add_executable(gam150test
         local/sdl_test.hpp
         renderer/shader.cpp
         renderer/shader.hpp
+        math/vec3.cpp
 )
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets)
+#add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#        COMMAND ${CMAKE_COMMAND} -E copy_directory
+#        ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets)
+#
+set(link_src "${CMAKE_SOURCE_DIR}/assets")
+if (UNIX AND NOT APPLE)
+    set(link_dst "${CMAKE_CURRENT_BINARY_DIR}/assets")
+else ()
+    set(link_dst "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/assets")
+endif ()
+add_custom_command(
+        TARGET ${PROJECT_NAME}
+        POST_BUILD COMMAND ${CMAKE_COMMAND}
+        -E create_symlink ${link_src} ${link_dst}
+        DEPENDS ${link_dst}
+        COMMENT "symbolic link ${link_src} => ${link_dst}"
+)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 23)
 

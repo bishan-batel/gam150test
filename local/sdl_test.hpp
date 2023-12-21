@@ -19,7 +19,7 @@ namespace bcake {
     f32 time, offset;
 
   public:
-    explicit Bruh(const resource<Texture> &texture, f32 offset);
+    explicit Bruh(const handle<Texture> &texture, f32 offset);
 
     void process(f32 dt) override;
   };

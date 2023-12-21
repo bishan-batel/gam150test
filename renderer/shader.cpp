@@ -4,10 +4,13 @@
 
 #include "shader.hpp"
 
+#include <SDL_video.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <GL/glew.h>
+
+#include "core/SceneTree.hpp"
 
 namespace gl {
   Shader::Shader(const char *const source, const ShaderType type) :
@@ -47,7 +50,8 @@ namespace gl {
     if (not success) {
       char infoLog[512];
       glGetProgramInfoLog(program_id, std::size(infoLog), nullptr, infoLog);
-      std::cerr << "Program linking Failed" << infoLog << std::endl;
+
+      std::cerr << " Program linking Failed\n" << infoLog << std::endl;
     }
 
     glDeleteShader(fragment.get_id());
@@ -58,8 +62,13 @@ namespace gl {
     glUseProgram(program_id);
   }
 
-  id Program::uniform(const char *const name) const {
+  i32 Program::uniform(const char *const name) const {
     return glGetUniformLocation(program_id, name);
+  }
+
+  void Program::updateScreenSize(const bcake::SceneTree *tree) const {
+    const auto size = tree->get_window_size();
+    glUniform2f(uniform("screenSize"), static_cast<f32>(size.w), static_cast<f32>(size.h));
   }
 
 } // bcake

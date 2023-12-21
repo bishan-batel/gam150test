@@ -11,8 +11,8 @@ namespace bcake {
   const auto VERT_SHADER_SOURCE = "assets/shaders/sprite.frag";
   const auto FRAG_SHADER_SOURCE = "assets/shaders/sprite.vert";
 
-  Sprite::Sprite(const std::shared_ptr<const Texture> &texture) :
-    texture(texture), position(vec3::ZERO), program(nullptr) {
+  Sprite::Sprite(const handle<const Texture> &texture) :
+    program(nullptr), texture(texture), position(vec3::ZERO) {
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -28,6 +28,16 @@ namespace bcake {
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
     // ReSharper disable once CppVariableCanBeMadeConstexpr
+    // const static f32 vertex_data[] = {
+    //   -0.5f, -0.5f,
+    //   0.5f, -0.5f,
+    //   0.5f, 0.5,
+    //
+    //   0.5f, 0.5f,
+    //   -0.5f, 0.5f,
+    //   -0.5f, -0.5,
+    // };
+    // ReSharper disable once CppVariableCanBeMadeConstexpr
     const static f32 vertex_data[] = {
       -0.5f, -0.5f,
       0.5f, -0.5f,
@@ -41,13 +51,28 @@ namespace bcake {
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
+    glBindAttribLocation(program->get_id(), 0, "vertexPosition");
+
+    on_render.connect(*this, [] {});
   }
 
   void Sprite::render() const {
-    program->use();
-    glUniform3f(static_cast<i32>(program->uniform("model")), position.x, position.y, position.z);
+    // Setup shader program
+    {
+      program->use();
+
+      // const auto transform = mat4::translation(position);
+      // glUniformMatrix4fv(program->uniform("model"), 16, true, transform.vals);
+      glUniform3f(program->uniform("model"), position.x, position.y, position.z);
+
+      program->updateScreenSize(get_tree());
+      const auto size = vec2(texture->get_width(), texture->get_height());
+      glUniform2f(program->uniform("spriteSize"), size.x, size.y);
+    }
+
     glBindVertexArray(vao);
     texture->bind();
+
     glDrawArrays(GL_TRIANGLES, 0, 6);
     texture->unbind();
   }

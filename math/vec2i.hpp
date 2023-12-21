@@ -20,6 +20,47 @@ union vec2i {
   vec2i(i32 x, i32 y) noexcept;
   explicit vec2i(i32 v) noexcept;
   explicit vec2i(vec2 vec) noexcept;
+  explicit operator vec2() const noexcept;
+
+
+  [[nodiscard]] f32 aspect_ratio() const noexcept;
+
+  [[nodiscard]] f32 len() const noexcept;
+  [[nodiscard]] i32 len2() const noexcept;
+
+  vec2i operator +(vec2i other) const noexcept;
+  vec2i operator -(vec2i other) const noexcept;
+  vec2i operator *(vec2i other) const noexcept;
+  vec2i operator /(vec2i other) const noexcept;
+
+
+  vec2i operator *(i32 scalar) const noexcept;
+  friend vec2i operator *(i32 scalar, vec2i other) noexcept;
+
+  vec2 operator *(f32 scalar) const noexcept;
+  friend vec2 operator *(f32 scalar, vec2i other) noexcept;
+
+  vec2i operator /(i32 scalar) const noexcept;
+
+  vec2i &operator *=(i32 scalar) noexcept;
+
+  vec2i &operator /=(i32 dividend) noexcept;
+
+  vec2i &operator +=(vec2i rhs) noexcept;
+  vec2i &operator -=(vec2i rhs) noexcept;
+  vec2i &operator *=(vec2i rhs) noexcept;
+  vec2i &operator /=(vec2i rhs) noexcept;
+
+  template <typename T> requires std::is_integral_v<T>
+  T get_x() {
+    return static_cast<T>(x);
+  }
+
+  template <typename T> requires std::is_integral_v<T>
+  T get_y() {
+    return static_cast<T>(y);
+  }
+
 };
 
 

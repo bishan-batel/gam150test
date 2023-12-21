@@ -30,12 +30,26 @@ mat3::mat3(
   m10(m10), m11(m11), m12(m12),
   m20(m20), m21(m21), m22(m22) {}
 
+mat3::mat3(const vec3 i, const vec3 j, const vec3 k) :
+  mat3(i.x, j.x, k.x,
+       i.y, j.y, k.y,
+       i.z, j.z, k.z
+    ) {}
+
 f32 mat3::det() const noexcept {
   return m00 * m11 * m22 - m00 * m12 * m21 - m01 * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20;
 }
 
 bool mat3::invertible() const noexcept {
   return det() != 0.f;
+}
+
+mat3 mat3::translate(const vec2 offset) const noexcept {
+  return {
+    m00, m01, m02 + offset.x,
+    m10, m11, m12 + offset.y,
+    m20, m21, m22
+  };
 }
 
 mat3 mat3::translation(vec2 offset) noexcept {
@@ -106,6 +120,26 @@ mat3 mat3::operator/(const f32 divisor) const noexcept {
     m10 / divisor, m11 / divisor, m12 / divisor,
     m20 / divisor, m21 / divisor, m22 / divisor
   };
+}
+
+mat3 &mat3::operator+=(const mat3 &other) noexcept {
+  return *this = *this + other;
+}
+
+mat3 &mat3::operator-=(const mat3 &other) noexcept {
+  return *this = *this - other;
+}
+
+mat3 &mat3::operator*=(const mat3 &other) noexcept {
+  return *this = *this * other;
+}
+
+mat3 &mat3::operator*=(const f32 scalar) noexcept {
+  return *this = *this * scalar;
+}
+
+mat3 &mat3::operator/=(const f32 scalar) noexcept {
+  return *this = *this / scalar;
 }
 
 vec3 mat3::operator*(const vec3 other) const noexcept {

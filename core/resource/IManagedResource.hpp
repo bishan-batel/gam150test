@@ -27,7 +27,7 @@ namespace bcake {
   };
 
   template <class T> requires std::is_base_of_v<IManagedResource, T>
-  using resource = std::shared_ptr<T>;
+  using handle = std::shared_ptr<T>;
 
 }
 #endif //RESOURCE_HPP

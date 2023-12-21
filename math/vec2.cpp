@@ -21,7 +21,7 @@ vec2::vec2(const f32 x, const f32 y) noexcept:
 vec2::vec2(const f32 v) noexcept:
   vec2(v, v) {}
 
-constexpr vec2::vec2(const f32 v[2]) noexcept:
+vec2::vec2(const f32 v[2]) noexcept:
   vec2(v[0], v[1]) {}
 
 vec2 vec2::operator+(const vec2 rhs) const noexcept {
@@ -36,16 +36,37 @@ vec2 vec2::operator-() const noexcept {
   return {-x, -y};
 }
 
+vec2 vec2::operator*(const vec2 rhs) const noexcept {
+  return {x * rhs.x, y * rhs.y};
+}
+
+vec2 &vec2::operator*=(const vec2 rhs) noexcept {
+  return *this = *this * rhs;
+}
+
+
+vec2 vec2::operator%(const vec2 rhs) const noexcept {
+  return {std::fmod(x, rhs.x), std::fmod(y, rhs.y)};
+}
+
+vec2 &vec2::operator%=(const vec2 rhs) noexcept {
+  return *this = *this % rhs;
+}
+
+vec2 vec2::operator%(const f32 rhs) const noexcept {
+  return {std::fmod(x, rhs), std::fmod(y, rhs)};
+}
+
+vec2 &vec2::operator%=(const f32 rhs) noexcept {
+  return *this = *this % rhs;
+}
+
 vec2 vec2::operator*(const f32 rhs) const noexcept {
   return {x * rhs, y * rhs};
 }
 
 vec2 vec2::operator/(const f32 rhs) const noexcept {
   return {x / rhs, y / rhs};
-}
-
-constexpr f32 vec2::operator[](const std::size_t n) const {
-  return buff[n];
 }
 
 vec2 &vec2::operator*=(const f32 scalar) {
@@ -68,21 +89,25 @@ vec2 &vec2::operator-=(const vec2 other) {
   return *this;
 }
 
-vec3 vec2::to3D(f32 z) const noexcept {
+vec3 vec2::as_vec3(f32 z) const noexcept {
   return {x, y, z};
 }
 
-
-vec2::operator Vector2() const noexcept {
-  return {x, y};
+vec3 vec2::homogeneous_point() const noexcept {
+  return as_vec3(1.f);
 }
 
-constexpr f32 vec2::len2() const noexcept {
-  return x * x + y * y;
+vec3 vec2::homogeneous_vector() const noexcept {
+  return as_vec3(0.f);
+}
+
+
+vec2 vec2::from_angle(const f32 theta) {
+  return RIGHT.rotate(theta);
 }
 
 f32 vec2::len() const noexcept {
-  return sqrtf(x * x + y * y);
+  return sqrtf(len2());
 }
 
 vec2 vec2::lerp(const vec2 to, const f32 t) const noexcept {
@@ -109,7 +134,7 @@ bool vec2::operator==(const vec2 other) const noexcept {
   return (*this - other).len2() < EQUALITY_EPSILON;
 }
 
-constexpr vec2 vec2::orthogonal() const noexcept {
+vec2 vec2::orthogonal() const noexcept {
   return {-y, x};
 }
 
@@ -129,13 +154,58 @@ f32 vec2::dot(const vec2 other) const noexcept {
   return x * other.x + y * other.y;
 }
 
+vec2 vec2::proj(const vec2 u) const noexcept {
+  return normalised() * dot(u);
+}
+
+vec2 vec2::proj_perp(const vec2 u) const noexcept {
+  return u - proj(u);
+}
+
 vec2 vec2::limit_length(const f32 l) const noexcept {
   const f32 m = len2();
 
   return m > l * l ? *this * sqrtf(l / m) : *this;
 }
 
-constexpr vec2 vec2::oplus(const vec2 other) const noexcept {
+vec2 vec2::with_length(const f32 magnitude) const noexcept {
+  return *this * std::sqrt(magnitude / len2());
+}
+
+vec2 vec2::with_heading(const f32 theta) const noexcept {
+  return from_angle(theta) * len();
+}
+
+f32 vec2::heading() const noexcept {
+  return angle_between(RIGHT);
+}
+
+f32 vec2::angle_between(const vec2 rhs) const noexcept {
+  return std::acos(dot(rhs) / std::sqrt(rhs.len2() * len2()));
+}
+
+f32 vec2::angle_to(const vec2 rhs) const noexcept {
+  return (rhs - *this).heading();
+}
+
+vec2 vec2::direction_to(const vec2 rhs) const noexcept {
+  return (rhs - *this).normalised();
+}
+
+vec2 vec2::rotate(const f32 theta) const noexcept {
+  const f32 cos = std::cos(theta), sin = std::sin(theta);
+  return {cos * x - sin * y, sin * x + cos * y};
+}
+
+f32 vec2::distance(const vec2 rhs) const noexcept {
+  return (*this - rhs).len();
+}
+
+f32 vec2::distance2(const vec2 rhs) const noexcept {
+  return (*this - rhs).len2();
+}
+
+vec2 vec2::oplus(const vec2 other) const noexcept {
   return {x * other.x, y * other.y};
 }
 

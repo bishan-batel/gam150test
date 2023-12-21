@@ -10,6 +10,10 @@
 
 #include "math/number.hpp"
 
+namespace bcake {
+  class SceneTree;
+}
+
 namespace gl {
 
   enum ShaderType : bool {
@@ -37,7 +41,8 @@ namespace gl {
 
     void use() const;
 
-    id uniform(const char *name) const;
+    i32 uniform(const char *name) const;
+    void updateScreenSize(const bcake::SceneTree *tree) const;
 
     [[nodiscard]] id get_id() const { return program_id; }
   };

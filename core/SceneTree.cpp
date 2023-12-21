@@ -48,7 +48,6 @@ namespace bcake {
       std::cerr << "Failed to initialise GLEW" << std::endl;
     }
 
-    glEnable(GL_DEPTH_TEST);
     glAlphaFunc(GL_GREATER, 0.5);
     glEnable(GL_ALPHA_TEST);
 
@@ -109,10 +108,16 @@ namespace bcake {
 
 
   void SceneTree::render() const {
+    // glBindFramebuffer(GL_FRAMEBUFFER, screen.fbo);
     glViewport(0, 0, window_size.w, window_size.y);
     glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+    glMatrixMode(GL_PROJECTION);
+    glOrtho(-100.f, 100.f, -100.f, 100.f, 0.1f, 100.f);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
     for (const auto &node : to_render) {
       node->render();
     }

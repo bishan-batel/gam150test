@@ -27,6 +27,8 @@ union mat3 final {
     f32 m20, f32 m21, f32 m22
     ) noexcept;
 
+  mat3(vec3 i, vec3 j, vec3 k);
+
   static mat3 translation(vec2 offset) noexcept;
 
   static mat3 scale(vec2 scale) noexcept;
@@ -37,6 +39,8 @@ union mat3 final {
 
   [[nodiscard]] bool invertible() const noexcept;
 
+  [[nodiscard]] mat3 translate(vec2 offset) const noexcept;
+
   mat3 operator +(const mat3 &other) const noexcept;
   mat3 operator -(const mat3 &other) const noexcept;
   mat3 operator -() const noexcept;
@@ -44,7 +48,16 @@ union mat3 final {
   mat3 operator *(const mat3 &other) const noexcept;
   mat3 operator *(f32 scalar) const noexcept;
   friend mat3 operator *(f32 scalar, const mat3 &other) noexcept;
+
   mat3 operator /(f32 divisor) const noexcept;
+
+  mat3 &operator +=(const mat3 &other) noexcept;
+  mat3 &operator -=(const mat3 &other) noexcept;
+
+  mat3 &operator *=(const mat3 &other) noexcept;
+
+  mat3 &operator *=(f32 scalar) noexcept;
+  mat3 &operator /=(f32 scalar) noexcept;
 
   vec3 operator *(vec3 other) const noexcept;
 };

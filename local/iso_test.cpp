@@ -69,7 +69,7 @@ namespace bcake {
     vel *= friction;
     real_position += vel * dt;
     constexpr auto a = SPRITE_SCALE / 2;
-    position = ((real_position / a).floor() * a).to3D(1); // position = target;
+    position = ((real_position / a).floor() * a).as_vec3(1); // position = target;
     time += dt * 3.f;
   }
 }

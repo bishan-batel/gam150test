@@ -11,22 +11,23 @@
 #include "math/vec2.hpp"
 #include "renderer/shader.hpp"
 
-
 namespace bcake {
   class Sprite : public CanvasItem {
-
-
-  public:
-    const std::shared_ptr<const Texture> texture;
-    vec3 position;
     std::unique_ptr<gl::Program> program;
     gl::id buffer = 0, vao = 0;
+
+  public:
+    // const signal<void(vec3 bruh)> on_move = _create_event<f32>("bruh");
+    SIGNAL(on_render, vec3 bruh);
+
+    const handle<const Texture> texture;
+    vec3 position;
 
   protected:
     void render() const override;
 
   public:
-    explicit Sprite(const std::shared_ptr<const Texture> &texture);
+    explicit Sprite(const handle<const Texture> &texture);
   };
 }
 
