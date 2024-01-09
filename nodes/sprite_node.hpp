@@ -18,7 +18,7 @@ namespace bcake {
 
   public:
     // const signal<void(vec3 bruh)> on_move = _create_event<f32>("bruh");
-    SIGNAL(on_render, vec3 bruh);
+    // SIGNAL(on_render, vec3 bruh);
 
     const handle<const Texture> texture;
     vec3 position;

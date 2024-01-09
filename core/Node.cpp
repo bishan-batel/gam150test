@@ -14,7 +14,6 @@ namespace bcake {
 
   void Node::initialise() {
     for (const auto &child : std::ranges::views::values(children)) {
-      asm("nop");
       child->inside_tree = inside_tree;
       child->tree = tree;
 
@@ -168,6 +167,11 @@ namespace bcake {
 
     inside_tree = false;
     unregister_to_tree();
+
+    for (const auto &[destructor, count] : dependent_receivers | std::views::values) {
+      destructor();
+    }
+
     on_free();
   }
 

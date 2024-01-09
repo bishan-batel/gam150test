@@ -58,6 +58,8 @@ add_executable(gam150test
         renderer/shader.cpp
         renderer/shader.hpp
         math/vec3.cpp
+        core/event.cpp
+        core/event.hpp
 )
 
 #add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

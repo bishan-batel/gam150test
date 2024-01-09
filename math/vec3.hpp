@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-#include "math/number.hpp"
+#include "number.hpp"
 
 union vec2;
 

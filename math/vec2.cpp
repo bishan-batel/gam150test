@@ -4,7 +4,10 @@
 
 #include "vec2.hpp"
 #include <iostream>
+#include <random>
 #include <stdexcept>
+#include <bits/stl_algo.h>
+
 #include "cmath"
 
 const vec2
@@ -70,23 +73,19 @@ vec2 vec2::operator/(const f32 rhs) const noexcept {
 }
 
 vec2 &vec2::operator*=(const f32 scalar) {
-  *this = *this * scalar;
-  return *this;
+  return *this = *this * scalar;
 }
 
 vec2 &vec2::operator/=(const f32 scalar) {
-  *this = *this / scalar;
-  return *this;
+  return *this = *this / scalar;
 }
 
 vec2 &vec2::operator+=(const vec2 other) {
-  *this = *this + other;
-  return *this;
+  return *this = *this + other;
 }
 
 vec2 &vec2::operator-=(const vec2 other) {
-  *this = *this - other;
-  return *this;
+  return *this = *this - other;
 }
 
 vec3 vec2::as_vec3(f32 z) const noexcept {
@@ -106,12 +105,25 @@ vec2 vec2::from_angle(const f32 theta) {
   return RIGHT.rotate(theta);
 }
 
+vec2 vec2::random(const f32 length) {
+  // TODO platform-specific implementation
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<f32> dis(1.0, 2.0);
+  return from_angle(dis(gen)) * length;
+}
+
 f32 vec2::len() const noexcept {
   return sqrtf(len2());
 }
 
 vec2 vec2::lerp(const vec2 to, const f32 t) const noexcept {
-  return *this + (to - *this) * t;
+  return {std::lerp(x, to.x, t),
+          std::lerp(y, to.y, t)};
+}
+
+vec2 vec2::move_toward(const vec2 to, const f32 max_distance) const noexcept {
+  return *this + (to - *this).limit_length(max_distance);
 }
 
 vec2 vec2::normalised() const noexcept {
@@ -119,11 +131,8 @@ vec2 vec2::normalised() const noexcept {
 }
 
 vec2 vec2::clamp(const vec2 min, const vec2 max) const noexcept {
-  f32 x2 = x > max.x ? max.x : x;
-  x2 = x2 < min.x ? min.x : x2;
-  f32 y2 = y > max.y ? max.y : y;
-  y2 = y2 < min.y ? min.y : y2;
-  return {x2, y2};
+  return {std::clamp(x, min.x, max.x),
+          std::clamp(y, min.y, max.y)};
 }
 
 bool vec2::is_approx(const vec2 other, const f32 epsilon) const noexcept {

@@ -25,7 +25,14 @@ union vec2i {
 
   [[nodiscard]] f32 aspect_ratio() const noexcept;
 
+  /**
+   * Magnitude of the vector
+   */
   [[nodiscard]] f32 len() const noexcept;
+
+  /**
+   * The square of the magnitude of the vector
+   */
   [[nodiscard]] i32 len2() const noexcept;
 
   vec2i operator +(vec2i other) const noexcept;

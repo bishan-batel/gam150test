@@ -11,7 +11,7 @@
 union mat3 final {
   static constexpr std::size_t SIZE = 3;
 
-  static const mat3 identity;
+  static const mat3 identity, zero;
 
   struct {
     f32 m00, m01, m02;
@@ -35,11 +35,21 @@ union mat3 final {
 
   [[nodiscard]] f32 trace() const noexcept;
 
+  /**
+   * Gets the determinant of the matrix
+   */
   [[nodiscard]] f32 det() const noexcept;
 
+  /**
+   * Checks if the matrix has a valid inverse (det(A) != 0)
+   */
   [[nodiscard]] bool invertible() const noexcept;
 
+  /**
+   * Applies a 2D translation to the matrix
+   */
   [[nodiscard]] mat3 translate(vec2 offset) const noexcept;
+
 
   mat3 operator +(const mat3 &other) const noexcept;
   mat3 operator -(const mat3 &other) const noexcept;

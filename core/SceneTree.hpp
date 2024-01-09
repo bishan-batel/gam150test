@@ -6,7 +6,6 @@
 #define SCENE_TREE_HPP
 
 #include <chrono>
-#include <functional>
 #include <queue>
 
 #include <SDL2/SDL.h>
@@ -14,7 +13,6 @@
 #include "math/color.hpp"
 #include "math/vec2i.hpp"
 #include "nodes/CanvasItem.hpp"
-#include "renderer/shader.hpp"
 
 namespace bcake {
   class SceneTree final {

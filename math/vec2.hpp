@@ -7,7 +7,7 @@
 #define GAM150TEST_VEC2_H
 
 
-#include "math/number.hpp"
+#include "number.hpp"
 #include <iostream>
 
 #include "vec3.hpp"
@@ -82,6 +82,11 @@ union vec2 final {
   static vec2 from_angle(f32 theta);
 
   /**
+   * Returns a vector with a random direction
+   */
+  static vec2 random(f32 length = 1.f);
+
+  /**
    * Calculates the magnitude of the vector
    * @return Length of the vector
    * @see vec2::len2()
@@ -103,6 +108,8 @@ union vec2 final {
    * @param t percentage from 0 to 1 to interpolate to 'to'
    */
   [[nodiscard]] vec2 lerp(vec2 to, f32 t) const noexcept;
+
+  [[nodiscard]] vec2 move_toward(vec2 to, f32 max_distance) const noexcept;
 
   /**
    * Returns a unit vector in the same direction

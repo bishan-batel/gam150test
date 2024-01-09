@@ -15,46 +15,21 @@
 #include "node_path.hpp"
 #include "string_name.hpp"
 
-
 namespace bcake {
   // Forward declaration required for this instance
   class SceneTree;
   class Node;
 
-  template <class _, typename... Args>
-  class signal {
-    friend class Node;
-
-    Node &owner;
-    const string_name name;
-
-    struct Listener {
-      Node &listener_node;
-      const std::function<void(Args...)> callback;
-    };
-
-    std::vector<Listener> listeners;
-
-    explicit signal(const char *const name, Node &owner) noexcept:
-      owner(owner), name(name) {}
-
-  public:
-    void emit(Args... args) {
-      for (const auto &[node, callback] : listeners) {
-        callback(args...);
-      }
-    }
-
-    void connect(Node &listener_node, const std::function<void(Args...)> callback) {
-      listeners.push_back({listener_node, callback});
-    }
-
-    void operator=(signal &) = delete;
-  };
-
   class Node {
     friend class SceneTree;
 
+  public:
+    struct signal_dependecy {
+      const std::function<void()> destructor;
+      u32 count;
+    };
+
+  private:
     bool queued_for_deletion = false,
          inside_tree = false,
          is_initialised = false;
@@ -65,7 +40,8 @@ namespace bcake {
 
     std::string name;
 
-    std::unordered_set<Node *> dependant_nodes;
+    std::unordered_map<u64, signal_dependecy> dependent_receivers;
+
 
     void initialise();
 
@@ -87,10 +63,10 @@ namespace bcake {
 
     virtual void on_free();
 
-    template <typename... Args>
-    signal<Args...> _create_event(const char *const name) {
-      return signal<Args...>(name, *this);
-    }
+    // template <typename... Args>
+    // signal<Args...> _create_event(const char *const name) {
+    //   return signal<Args...>(name, *this);
+    // }
 
 #define SIGNAL(name, ...) \
   signal<void(__VA_ARGS__)> name = _create_event<void(__VA_ARGS__)>(#name)
@@ -132,6 +108,10 @@ namespace bcake {
     [[nodiscard]] bool is_inside_tree() const noexcept;
 
     [[nodiscard]] virtual const char *type_id() const noexcept;
+
+    std::unordered_map<u64, signal_dependecy> &get_dependent_receivers() noexcept {
+      return dependent_receivers;
+    }
   };
 }
 #endif //NODE_H

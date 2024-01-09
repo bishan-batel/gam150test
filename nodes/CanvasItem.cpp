@@ -21,7 +21,9 @@ namespace bcake {
     to_render.erase(std::ranges::find(to_render, this));
   }
 
-  void CanvasItem::render() const {}
+  void CanvasItem::render() const {
+    on_render();
+  }
 
   const char *CanvasItem::type_id() const noexcept {
     return "CanvasItem";

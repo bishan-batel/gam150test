@@ -53,7 +53,7 @@ namespace bcake {
     glEnableVertexAttribArray(0);
     glBindAttribLocation(program->get_id(), 0, "vertexPosition");
 
-    on_render.connect(*this, [] {});
+    // on_render.connect(*this, [] {});
   }
 
   void Sprite::render() const {

@@ -126,7 +126,7 @@ namespace bcake {
   }
 
   void SceneTree::post_frame() {
-    while (!queued_to_initialise.empty()) {
+    while (not queued_to_initialise.empty()) {
       queued_to_initialise.front()->initialise();
       queued_to_initialise.pop();
     }

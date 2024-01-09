@@ -11,6 +11,11 @@ const mat3 mat3::identity = mat3(1, 0, 0,
                                  0, 0, 1
   );
 
+const mat3 mat3::zero = mat3(0, 0, 0,
+                             0, 0, 0,
+                             0, 0, 0
+  );
+
 f32 mat3::trace() const noexcept {
   return m00 + m11 + m22;
 }

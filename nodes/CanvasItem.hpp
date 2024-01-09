@@ -6,6 +6,7 @@
 #define NODE_2_D_HPP
 
 #include "core/Node.hpp"
+#include "core/event.hpp"
 #include "math/mat3.hpp"
 
 
@@ -25,6 +26,9 @@ namespace bcake {
     void unregister_to_tree() override;
 
   public:
+    event<> on_render{};
+
+
     virtual void render() const;
 
     [[nodiscard]] const char *type_id() const noexcept override;
